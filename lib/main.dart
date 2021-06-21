@@ -25,8 +25,8 @@ class MyApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text('test1',style: TextStyle(fontSize: 30),),
-              Text(testHello.resHello2("하하"),style: TextStyle(fontWeight: FontWeight.bold),),
-              Text(testHello.resHello3("확인용"),style: TextStyle(color: Colors.red),),
+              Text(testHello.resHello2("허허"),style: TextStyle(fontWeight: FontWeight.bold),),
+              Text(testHello.resHello3("뭘까"),style: TextStyle(color: Colors.red),),
             ],
 
           ),
