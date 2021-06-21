@@ -1,0 +1,6 @@
+io/flutter/plugins/GeneratedPluginRegistrant.java
+ io.flutter.plugins.GeneratedPluginRegistrant
+com/nfcai/nfc_app21/MainActivity.java
+ com.nfcai.nfc_app21.MainActivity
+com/nfcai/nfc_app21/BuildConfig.java
+ com.nfcai.nfc_app21.BuildConfig
