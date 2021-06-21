@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "323157389509",
+    "project_id": "nfc-2021",
+    "storage_bucket": "nfc-2021.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:323157389509:android:5d78915d28f3b1fce5c0ac",
+        "android_client_info": {
+          "package_name": "com.nfcai.nfc_app21"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "323157389509-clteoadjeb4vdqajueu7on2snfl34vl1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBq_tRlcHcjv63QuvFu6k_UV265cFMtmZ4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "323157389509-clteoadjeb4vdqajueu7on2snfl34vl1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
