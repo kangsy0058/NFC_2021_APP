@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             children: <Widget>[
               Text('디벨롭',style: TextStyle(fontSize: 30),),
               Text(testHello.resHello2("ign 확인"),style: TextStyle(fontWeight: FontWeight.bold),),
-              Text(testHello.resHello3("과연"),style: TextStyle(color: Colors.red),),
+              Text(testHello.resHello3("ign 확인 2"),style: TextStyle(color: Colors.red),),
             ],
 
           ),
