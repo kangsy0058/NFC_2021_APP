@@ -1,11 +1,11 @@
 class TestHello{
 
   String resHello3(String text){
-    return text+"하하하하";
+    return text+"하하하하adasdasdasdasd";
   }
 
   String resHello2(String text){
-    return text+"하하ㅏ하하하";
+    return text+"하하ㅏadadasdasd하하하";
   }
 
 }
