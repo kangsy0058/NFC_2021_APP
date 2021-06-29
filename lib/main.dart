@@ -1,32 +1,130 @@
 // @dart=2.9
 
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:get/get.dart';
-import 'package:nfc_app21/src/controller/notification_controller.dart';
-import 'package:nfc_app21/src/page/message_page.dart';
-import 'package:nfc_app21/treeTest.dart';
-
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 Future<void> main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
+class App extends StatefulWidget {
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  bool _initialized = false;
+  bool _error = false;
+
+  void initializeFlutterFire() async {
+    try {
+      await Firebase.initializeApp();
+      setState(() {
+        _initialized = true;
+      });
+    } catch(e) {
+      setState(() {
+        _error = true;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    initializeFlutterFire();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    if(_error) {
+      return MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(onPressed: () {
+                  print("눌림");
+                }, child: Text("오류")
+                ),
+              ],
+
+            ),
+          ),
+        ),
+      );
+    }
+    if (!_initialized) {
+      return MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(onPressed: () {
+                  print("눌림");
+                }, child: Text("로딩")
+                ),
+              ],
+
+            ),
+          ),
+        ),
+      );
+    }
+
+    //정상 init하면 이부분 나온다
     return MaterialApp(
-      home:  Scaffold(
+      home: Scaffold(
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text('hahaahah확인333',style: TextStyle(fontSize: 30),),
-              Text(testHello.resHello2("aaaaa 확인"),style: TextStyle(fontWeight: FontWeight.bold),),
-              Text(testHello.resHello3("aaaaaa 확인 2"),style: TextStyle(color: Colors.red),),
+              ElevatedButton(onPressed: (){
+                print("test");
+              }, child: Text("test")),
+              ElevatedButton(onPressed: ()async  {
+                try {
+                  UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+                      email: "barry.allen@example.com",
+                      password: "SuperSecretPassword!"
+                  );
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'weak-password') {
+                    print('The password provided is too weak.');
+                  } else if (e.code == 'email-already-in-use') {
+                    print('The account already exists for that email.');
+                  }
+                } catch (e) {
+                  print(e);
+                }
+              }, child: Text("인증")
+              ),
+              ElevatedButton(onPressed: ()async{
+                try {
+                  UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+                      email: "test@naver.com",
+                      password: "1q2w3e"
+                  );
+                  print("하하하");
+
+                  print(await userCredential.user.getIdToken());
+
+                  print("로그인 성공!");
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'user-not-found') {
+                    print('No user found for that email.');
+                  } else if (e.code == 'wrong-password') {
+                    print('Wrong password provided for that user.');
+                  }
+                }
+
+              }, child: Text("로그인"))
             ],
 
           ),
@@ -34,8 +132,11 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-
 }
+
+
+
+
 // class MyApp extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
