@@ -9,13 +9,6 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   bool valNotify1=true;
   bool valNotify2=false;
@@ -41,9 +34,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("SettingPage", style: TextStyle(fontSize: 22),),
-      ),
+
       body: Container(
         padding: const EdgeInsets.all(10),
         child: ListView(
@@ -53,7 +44,7 @@ class _SettingPageState extends State<SettingPage> {
               children: [
                 Icon(
                   Icons.settings,
-                  color: Colors.blue,
+                  color: Colors.indigo,
                 ),
                 SizedBox(width: 10,),
                 Text("asdasd",
@@ -172,7 +163,7 @@ class _SettingPageState extends State<SettingPage> {
                       borderRadius: BorderRadius.circular(20)),
                   primary: Colors.white70,
                   onPrimary: Colors.black,	//글자색
-                  minimumSize: Size(300, 50),	//width, height
+                  minimumSize: Size(200, 50),	//width, height
                   alignment: Alignment.center,
                   textStyle: const TextStyle(fontSize: 18)
               ),
