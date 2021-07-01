@@ -24,11 +24,11 @@ class _LogPageState extends State<LogPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(title, style: TextStyle(fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.bold,fontFamily: "Cafe24",
                     color: Colors.white),),
                 SizedBox(height: 10,),
                 Text(text, style: TextStyle(fontSize: 15,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.normal,fontFamily: "Cafe24",
                     color: Colors.white),),
               ],
             ),

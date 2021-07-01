@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
                 margin:  EdgeInsets.fromLTRB(20,20,20,10),
                 child: Column(
                   children: [
-                    Text("코로나바이러스 감염증 - 19", style: TextStyle(fontSize: 20 ,fontWeight: FontWeight.bold)),
+                    Text("코로나바이러스 감염증 - 19", style: TextStyle(fontSize: 20 ,fontWeight: FontWeight.bold,fontFamily: "Cafe24")),
                     Text("06.30 00:00 기준",style: TextStyle(fontSize: 13)),
                     Container(
 
