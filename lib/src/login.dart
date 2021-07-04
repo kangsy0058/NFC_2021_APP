@@ -10,7 +10,8 @@ class LoginWidget extends StatelessWidget {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
 
     // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth = await googleUser!
+        .authentication;
 
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
@@ -22,9 +23,6 @@ class LoginWidget extends StatelessWidget {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +33,8 @@ class LoginWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(onPressed:signInWithGoogle, child: Text("google Login버튼 "))
+            TextButton(
+                onPressed: signInWithGoogle, child: Text("google Login버튼 "))
           ],
         ),
       ),

@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
 
 class HomePage extends StatefulWidget {
   @override
@@ -9,6 +11,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+
+
   Column board(String text,String day,String all,Color colors ){
     return Column(
       children: [
@@ -30,9 +35,38 @@ class _HomePageState extends State<HomePage> {
                   Column(
                     children: [
                       Text("개인 안심번호", style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+
                       Text("1234가나", style: TextStyle(fontSize: 20)),
                     ],
                   ),
+
+                  TextButton(onPressed: ()async{//api호출하고 res까지만 받은 상태 1.date값 datenow로 변경,2.xml data parsing
+
+                    final queryParameters = {
+                      //하하 % URI 인코딩이 뭐가 문제가 있다 %를 25로 문제!!
+                      'serviceKey': Uri.decodeFull("M8J0A7jAfaLHLHj9D0X1lnYa4XJtbC4fuymKw4y81OniBFdyb1IeE%2BZXE4A7WE0RfhlVO%2Bd2tuxIZ4qH5fmBQQ%3D%3D") ,
+                      'pageNo': '1',
+                      'numOfRows': '2',
+                      'startCreateDt': '20210703',
+                      'endCreateDt' : '20210704'
+                    };
+                    var url = Uri.http("openapi.data.go.kr", "/openapi/service/rest/Covid19/getCovid19InfStateJson",queryParameters);
+                    var response = await http.get(url);
+                    if (response.statusCode == 200) {
+                      // print( DateTime.now());
+                      // print(url);
+                      print(response.body);
+                      // var jsonResponse =
+                      // convert.jsonDecode(response.body) as Map<String, dynamic>;
+                      // var itemCount = jsonResponse['totalItems'];
+                      // print('Number of books about http: $itemCount.');
+                    } else {
+                      print('Request failed with status: ${response.statusCode}.');
+                    }
+
+
+
+                  }, child: Text("데이터 test")),
                   Column(
                     children: [
                       Text("디바이스 ID", style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold)),
