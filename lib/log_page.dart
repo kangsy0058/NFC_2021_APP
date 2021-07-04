@@ -33,11 +33,9 @@ class _LogPageState extends State<LogPage> {
               ],
             ),
           )
-
         ],
       ),
     );
-
   }
   @override
   Widget build(BuildContext context) {
@@ -54,7 +52,7 @@ class _LogPageState extends State<LogPage> {
           height: MediaQuery
               .of(context)
               .size
-              .height * 0.38,
+              .height * 0.35,
           decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(50), topRight: Radius.circular(50)),

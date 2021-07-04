@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -71,7 +72,7 @@ class _SettingPageState extends State<SettingPage> {
                         borderRadius: BorderRadius.circular(20)
                     )
                 ),
-                onPressed: () {},
+                onPressed: FirebaseAuth.instance.signOut,//현재 로그인한 사용자 로그아웃
                 child: Text("SIGN OUT", style: TextStyle(
                     fontSize: 16,
                     letterSpacing: 2.2,
