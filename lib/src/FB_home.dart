@@ -20,7 +20,7 @@ class _fb_homeState extends State<fb_home> {
           if(!snapshot.hasData){
             return LoginWidget();
           }else{
-            return App();
+             return App();
 
             // Center(
             //   child: Column(

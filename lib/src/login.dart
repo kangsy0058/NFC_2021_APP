@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:uuid/uuid.dart';
+import 'package:http/http.dart' as http;
 
 class LoginWidget extends StatelessWidget {
 
@@ -23,6 +28,38 @@ class LoginWidget extends StatelessWidget {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+
+
+  Future<UserCredential> signInWithKakao() async {
+    final clientState =Uuid().v4();
+    final url = Uri.https('kauth.kakao.com', '/oauth/authorize',{
+      'response_type' : 'code',
+      'client_id':"34014e7ffd6391bbfa87d855c6073cac",
+      'redirect_uri':"https://picturesque-fluorescent-border.glitch.me/callbacks/kakao/sign_in",
+      'state':clientState,
+    });
+    final result = await FlutterWebAuth.authenticate(url: url.toString(), callbackUrlScheme: "webauthcallback");
+    final body = Uri.parse(result).queryParameters;
+    print("이부부ㅜ부부ㅜ붑ㄴ");
+    print(body);//인가코드 부분 이거를 가지고 토큰받기 호출!
+
+    final tokenUrl = Uri.https('kauth.kakao.com', '/oauth/token',{
+      'grant_type' : 'authorization_code',
+      'client_id':"34014e7ffd6391bbfa87d855c6073cac",
+      'redirect_uri':"https://picturesque-fluorescent-border.glitch.me/callbacks/kakao/sign_in",
+      'code':body['code'],
+    });
+
+    var response = await http.post(tokenUrl);
+    Map<String,dynamic> accessTokenResult = jsonDecode(response.body);
+    print("토큰 넘어오는 부분ㄴㄴㄴㄴㄴㄴ");
+
+    var responseCustomToken = await http.post(Uri.parse("https://picturesque-fluorescent-border.glitch.me/callbacks/kakao/token"),
+        body: {"accessToken":accessTokenResult['access_token']});
+
+    return await FirebaseAuth.instance.signInWithCustomToken(responseCustomToken.body);
+
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +71,13 @@ class LoginWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-                onPressed: signInWithGoogle, child: Text("google Login버튼 "))
+                onPressed: signInWithGoogle, child: Text("google Login버튼 ")),
+            SizedBox(
+              height: 30,
+            ),
+            TextButton(
+                onPressed: signInWithKakao, child: Text("kakao  Login")),
+
           ],
         ),
       ),
