@@ -33,6 +33,7 @@ class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: Column(
@@ -64,21 +65,29 @@ class _SettingPageState extends State<SettingPage> {
             buildEtcOption("F&A"),
             Center(
                 child: SizedBox(
-              width: MediaQuery.of(context).size.width * 0.4,
-              height: MediaQuery.of(context).size.height * 0.045,
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20))),
-                onPressed: FirebaseAuth.instance.signOut, //현재 로그인한 사용자 로그아웃
-                child: Text(
-                  "SIGN OUT",
-                  style: TextStyle(
-                      fontSize: 14, letterSpacing: 2.0, color: Colors.black),
-                ),
-              ),
-            ))
+                  width: MediaQuery
+                      .of(context)
+                      .size
+                      .width * 0.4,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height * 0.045,
+                  child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20))),
+                    onPressed: FirebaseAuth.instance.signOut, //현재 로그인한 사용자 로그아웃
+                    child: Text(
+                      "SIGN OUT",
+                      style: TextStyle(
+                          fontSize: 14,
+                          letterSpacing: 2.0,
+                          color: Colors.black),
+                    ),
+                  ),
+                ))
           ],
         ),
       ),
@@ -88,8 +97,14 @@ class _SettingPageState extends State<SettingPage> {
   //개인 번호
   Container buildAccountOption(BuildContext context, String title, String str) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.height * 0.05,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.8,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 0.05,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
         //h간격 조절
@@ -118,9 +133,9 @@ class _SettingPageState extends State<SettingPage> {
                             Icon(Icons.arrow_downward),
                             TextField(
                                 decoration: InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: str,
-                            ))
+                                  border: OutlineInputBorder(),
+                                  labelText: str,
+                                ))
                           ],
                         ),
                         actions: [
@@ -135,7 +150,7 @@ class _SettingPageState extends State<SettingPage> {
               }, //동작
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(
-                      //모서리를 둥글게
+                    //모서리를 둥글게
                       borderRadius: BorderRadius.circular(20)),
                   primary: Colors.white70,
                   onPrimary: Colors.black,
@@ -154,11 +169,17 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   //스위치
-  Container buildNotificationOption(
-      String title, bool value, Function onChangeMethod) {
+  Container buildNotificationOption(String title, bool value,
+      Function onChangeMethod) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.8,
-      height: MediaQuery.of(context).size.height * 0.05,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.8,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height * 0.05,
       padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -190,8 +211,14 @@ class _SettingPageState extends State<SettingPage> {
 //옵션
   Container buildEtcOption(String title) {
     return Container(
-        width: MediaQuery.of(context).size.width * 0.9,
-        height: MediaQuery.of(context).size.height * 0.07,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width * 0.9,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.07,
         child: ListTile(
           leading: Icon(
             Icons.question_answer,
@@ -200,6 +227,7 @@ class _SettingPageState extends State<SettingPage> {
           title: Text(title),
           trailing: Icon(Icons.arrow_forward_ios),
           onTap: () {},
-        ));
+        )
+    );
   }
 }
