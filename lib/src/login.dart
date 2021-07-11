@@ -6,6 +6,7 @@ import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginWidget extends StatelessWidget {
 
@@ -64,20 +65,26 @@ class LoginWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text("init test"),
-      ),
       body: Center(
         child: Column(
+
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-                onPressed: signInWithGoogle, child: Text("google Login버튼 ")),
-            SizedBox(
-              height: 30,
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SignInButton(Buttons.Google, onPressed: signInWithGoogle),
             ),
-            TextButton(
-                onPressed: signInWithKakao, child: Text("kakao  Login")),
+
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SignInButton(Buttons.AppleDark, onPressed: signInWithGoogle),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: SignInButton(Buttons.Email, onPressed: signInWithKakao),
+            ),
+
 
           ],
         ),

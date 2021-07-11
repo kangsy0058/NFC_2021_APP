@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
+import 'package:nfc_app21/log_page.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -419,7 +421,12 @@ class _HomePageState extends State<HomePage> {
                   flex: 1,
                   fit: FlexFit.loose,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LogPage()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),

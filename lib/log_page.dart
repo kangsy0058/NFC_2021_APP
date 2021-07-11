@@ -18,7 +18,7 @@ class _LogPageState extends State<LogPage> {
         children: [
           Icon(
             CupertinoIcons.check_mark_circled_solid,
-            color: Color(0xff00cf8d),
+            color: Colors.white,
             size: 30,
           ),
           Container(
@@ -70,7 +70,7 @@ class _LogPageState extends State<LogPage> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50),
                       topRight: Radius.circular(50)),
-                  color: Colors.indigo),
+                  color: Color(0xff8aadf8)),
               child: Stack(
                 children: [
                   Column(
