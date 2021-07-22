@@ -33,16 +33,13 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
               });
             }
           },
-          onFormatChanged: (format) {
-            if (_calendarFormat != format) {
-              setState(() {
-                _calendarFormat = format;
-              });
-            }
-          },
           onPageChanged: (focusedDay) {
             _focusedDay = focusedDay;
           },
+          headerStyle: HeaderStyle(
+              formatButtonVisible: false,
+              titleCentered: true
+          ),
         ),
       ],
     );

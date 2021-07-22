@@ -61,6 +61,18 @@ class _LogPageState extends State<LogPage> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            AppBar(
+              backgroundColor: Colors.white,
+              iconTheme: IconThemeData(color: Colors.grey),
+              elevation: 0,
+              title: Text(
+                "상세 기록",
+                style: TextStyle(
+                    color: Color(0xff6382f4),
+                    fontWeight: FontWeight.w900,
+                    fontFamily: 'Cafe24'),
+              ),
+            ),
             Expanded(child: TableBasicsExample()),
             Container(
               padding: EdgeInsets.only(left: 30),
