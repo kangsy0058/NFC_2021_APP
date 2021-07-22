@@ -1,16 +1,18 @@
 // @dart=2.9
 
+import 'dart:ffi';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
 import 'package:nfc_app21/setting_page.dart';
 import 'package:nfc_app21/src/FB.dart';
-
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification.body}');
@@ -20,8 +22,10 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_messageHandler);
-  runApp(Myapp());
+  initializeDateFormatting().then((_) => runApp(Myapp()));
 }
+
+
 
 class Myapp extends StatelessWidget {
   @override
