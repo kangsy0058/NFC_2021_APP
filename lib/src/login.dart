@@ -8,6 +8,7 @@ import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
+
 class LoginWidget extends StatelessWidget {
 
 
@@ -29,7 +30,22 @@ class LoginWidget extends StatelessWidget {
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
-
+  void testSigIn() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+          email:  "test@naver.com",
+          password: "1q2w3e"
+      );
+      //  print(await userCredential.user!.getIdToken());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
 
   Future<UserCredential> signInWithKakao() async {
     final clientState =Uuid().v4();
@@ -54,9 +70,9 @@ class LoginWidget extends StatelessWidget {
     var response = await http.post(tokenUrl);
     Map<String,dynamic> accessTokenResult = jsonDecode(response.body);
     print("토큰 넘어오는 부분ㄴㄴㄴㄴㄴㄴ");
-
     var responseCustomToken = await http.post(Uri.parse("https://picturesque-fluorescent-border.glitch.me/callbacks/kakao/token"),
         body: {"accessToken":accessTokenResult['access_token']});
+
 
     return await FirebaseAuth.instance.signInWithCustomToken(responseCustomToken.body);
 
@@ -77,15 +93,13 @@ class LoginWidget extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: SignInButton(Buttons.AppleDark, onPressed: signInWithGoogle),
+              child: SignInButton(Buttons.AppleDark, onPressed: signInWithKakao),
             ),
 
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: SignInButton(Buttons.Email, onPressed: signInWithKakao),
+              child: SignInButton(Buttons.Email, onPressed: testSigIn),
             ),
-
-
           ],
         ),
       ),
