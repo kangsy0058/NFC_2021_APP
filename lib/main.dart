@@ -1,19 +1,25 @@
 // @dart=2.9
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
-import 'package:glassmorphism/glassmorphism.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
 import 'package:nfc_app21/setting_page.dart';
 import 'package:nfc_app21/src/FB.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:flutter/services.dart';
+
+
+Future<void> _messageHandler(RemoteMessage message) async {
+  print('background message ${message.notification.body}');
+}
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_messageHandler);
   runApp(Myapp());
 }
 
@@ -31,12 +37,7 @@ class Myapp extends StatelessWidget {
   }
 }
 
-//firebase 이전
-// Future<void> main() async {
-//   // await Firebase.initializeApp();
-//   WidgetsFlutterBinding.ensureInitialized();
-//   runApp(App());
-// }
+
 Container buildAccountOption(
     BuildContext context, String title, String str, IconData icn) {
   return Container(
@@ -130,60 +131,7 @@ Container buildAccountOption(
         ),
       ));
 }
-// Container buildNoticeOption(
-//     String valueChoose;
-//     List listItem=["ALL", "긴급", "?머더라"];
-//     BuildContext context, String title, String str, IconData icn) {
-//   return Container(
-//     child: Padding(
-//       padding: const EdgeInsets.all(16.0),
-//       child: Container(
-//         padding: EdgeInsets.only(left: 16,right: 16),
-//         decoration: BoxDecoration(
-//           border: Border.all(color: Colors.grey,width: 1),
-//           borderRadius: BorderRadius.circular(15)
-//         ),
-//         child: DropdownButton(
-//           hint: Text("ALL"),
-//           dropdownColor: Colors.white,
-//           icon: Icon(icn),
-//           iconSize: 36,
-//           isExpanded: true,
-//           underline: SizedBox(),
-//           style: TextStyle(
-//             color: Colors.black,
-//             fontSize: 22
-//           ),
-//           value: valueChoose,
-//           onChanged: (newValue){
-//             setState((){
-//               valueChoose=newValue;
-//             });
-//           },
-//           items: listItem.map((valueItem){
-//             return DropdownMenuItem(
-//             child: valueItem,
-//             child:Text(valueItem)
-// );
-// })
-//         ),
-//       )
-//     ),
-//   );
-// }
 
-// ElevatedButton.styleFrom(
-// shape: RoundedRectangleBorder(
-// //모서리를 둥글게
-// borderRadius: BorderRadius.circular(20)),
-// primary: Colors.white,
-// onPrimary: Colors.black,
-// //글자색
-//
-// minimumSize: Size(200, 50),
-// //width, height
-// alignment: Alignment.centerLeft,
-// textStyle: const TextStyle(fontSize: 13)),
 
 class App extends StatefulWidget {
   static final title = '온기';
@@ -201,6 +149,25 @@ class _AppState extends State<App> {
   List listItem = ['ALL', '긴급', '?머더라'];
 
   String valueChoose = 'ALL';
+
+  FirebaseMessaging messaging;
+  @override
+  void initState() {
+    super.initState();
+
+    FirebaseMessaging messaging;
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+      print(value);
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage event) {
+      print("message recieved");
+      print(event.notification.body);
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print('Message clicked!');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -343,73 +310,7 @@ class _AppState extends State<App> {
           )),
 
       body: _children[_currentIndex],
-      // bottomNavigationBar: SalomonBottomBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (i) => setState(() => _currentIndex = i),
-      //   items: [
-      //
-      //     /// Home
-      //     SalomonBottomBarItem(
-      //       icon: Icon(Icons.home),
-      //       title: Text("Home"),
-      //       selectedColor: Colors.purple,
-      //     ),
-      //     // SalomonBottomBarItem(
-      //     //   icon: Icon(Icons.icecream),
-      //     //   title: Text("haha"),
-      //     //   selectedColor: Colors.pink,
-      //     // ),
-      //
-      //     SalomonBottomBarItem(
-      //       icon: Icon(Icons.calendar_today),
-      //       title: Text("Log"),
-      //       selectedColor: Colors.orange,
-      //     ),
-      //     SalomonBottomBarItem(
-      //       icon: Icon(Icons.settings),
-      //       title: Text("setting"),
-      //       selectedColor: Colors.teal,
-      //     ),
-      //   ],
-      // ),
+
     );
   }
 }
-
-//
-// GlassmorphicContainer(
-// width: MediaQuery
-//     .of(context)
-// .size
-//     .width*0.7,
-// height: MediaQuery
-//     .of(context)
-// .size
-//     .height * 0.8,
-// borderRadius: 20,
-// linearGradient: LinearGradient(
-// begin: Alignment.topLeft,
-// end: Alignment.bottomRight,
-// colors: [
-// Color(0xFFffffff).withAlpha(55),
-// Color(0xFFffffff).withAlpha(45),
-// ],
-// stops: [
-// 0.3,
-// 1,
-// ]),
-// border: 1,
-// blur: 7,
-// borderGradient: LinearGradient(
-// begin: Alignment.bottomRight,
-// end: Alignment.topLeft,
-// colors: [
-// Color(0xFFffffff).withAlpha(100),
-// Color(0xFFFFFFF).withAlpha(55),
-// Color(0xFFffffff).withAlpha(10),
-// ],
-// stops: [
-// 0.06,
-// 0.95,
-// 1
-// ]),),
