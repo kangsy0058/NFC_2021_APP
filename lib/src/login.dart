@@ -9,27 +9,38 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class LoginWidget extends StatelessWidget {
-
-
   Future<UserCredential> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-
     // Obtain the auth details from the request
     final GoogleSignInAuthentication googleAuth = await googleUser!
         .authentication;
-
     // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
-
     // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  void testSigIn() async {
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
 
+          email:  "test@naver.com",
+          password: "1q2w3e"
+      );
+    //  print(await userCredential.user!.getIdToken());
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+      }
+    }
+  }
 
   Future<UserCredential> signInWithKakao() async {
     final clientState =Uuid().v4();
@@ -41,7 +52,7 @@ class LoginWidget extends StatelessWidget {
     });
     final result = await FlutterWebAuth.authenticate(url: url.toString(), callbackUrlScheme: "webauthcallback");
     final body = Uri.parse(result).queryParameters;
-    print("이부부ㅜ부부ㅜ붑ㄴ");
+    print("인가 코드 부분");
     print(body);//인가코드 부분 이거를 가지고 토큰받기 호출!
 
     final tokenUrl = Uri.https('kauth.kakao.com', '/oauth/token',{
@@ -53,12 +64,16 @@ class LoginWidget extends StatelessWidget {
 
     var response = await http.post(tokenUrl);
     Map<String,dynamic> accessTokenResult = jsonDecode(response.body);
-    print("토큰 넘어오는 부분ㄴㄴㄴㄴㄴㄴ");
+    print("토큰 넘어오는 부분ㄴ");
 
     var responseCustomToken = await http.post(Uri.parse("https://picturesque-fluorescent-border.glitch.me/callbacks/kakao/token"),
         body: {"accessToken":accessTokenResult['access_token']});
 
+    print(responseCustomToken.body);
+
+
     return await FirebaseAuth.instance.signInWithCustomToken(responseCustomToken.body);
+
 
   }
   @override
@@ -77,15 +92,13 @@ class LoginWidget extends StatelessWidget {
 
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: SignInButton(Buttons.AppleDark, onPressed: signInWithGoogle),
+              child: SignInButton(Buttons.AppleDark, onPressed: signInWithKakao),
             ),
 
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: SignInButton(Buttons.Email, onPressed: signInWithKakao),
+              child: SignInButton(Buttons.Email, onPressed: testSigIn),
             ),
-
-
           ],
         ),
       ),

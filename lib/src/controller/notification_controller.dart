@@ -1,3 +1,51 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'dart:io';
+
+class PushManager {
+  static final PushManager _manager = PushManager._internal();
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  factory PushManager() {
+    return _manager;
+  }
+  PushManager._internal() {
+    // 초기화 코드
+  }
+
+  void _requestIOSPermission() {
+    _firebaseMessaging.requestPermission(alert: true,sound: true,badge: true,
+
+    );
+  }
+
+  void registerToken() {
+    if (Platform.isIOS) {
+      _requestIOSPermission();
+    }
+
+    _firebaseMessaging.getToken().then((token) {
+      print(token);
+      // 장고 서버에 token알려주기
+    });
+  }
+
+  void listenFirebaseMessaging() {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('Got a message whilst in the foreground!');
+      print('Message data: ${message.data}');
+
+      if (message.notification != null) {
+        print('Message also contained a notification: ${message.notification}');
+      }
+    });
+
+
+  }
+}
+
+
+
+
+
 // import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:get/get.dart';
 // import 'package:get/get_state_manager/get_state_manager.dart';
@@ -52,3 +100,4 @@
 //     return "sdf";
 //   }
 // }
+

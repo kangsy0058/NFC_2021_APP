@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -422,6 +423,7 @@ class _HomePageState extends State<HomePage> {
                   fit: FlexFit.loose,
                   child: ElevatedButton(
                     onPressed: () {
+                      print(FirebaseAuth.instance.currentUser);
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => LogPage()),

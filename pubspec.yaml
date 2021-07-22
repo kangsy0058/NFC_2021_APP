@@ -35,7 +35,7 @@ dependencies:
   flutter_web_auth: ^0.3.0
   flutter_signin_button: ^2.0.0
   glassmorphism: ^2.0.1
-
+  firebase_messaging: ^10.0.4
 
 
 
