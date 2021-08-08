@@ -1,10 +1,10 @@
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
+import 'package:nfc_app21/data/corna.dart';
 
 import 'package:nfc_app21/log_page.dart';
 
@@ -14,17 +14,18 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  Column board(String text, String day, String all, Color colors) {
-    return Column(
-      children: [
-        Text(text),
-        Text(day, style: TextStyle(color: colors, fontWeight: FontWeight.bold)),
-        Text(all)
-      ],
-    );
-  }
+  CBoard cronaData = CBoard();
 
+  @override
+  void initState() {
+    super.initState();
+
+    cronaData.cornaInit();
+
+  }
   Container buildConfirmedCases() {
+
+
     return Container(
       padding: EdgeInsets.fromLTRB(7, 10, 7, 0),
       margin: EdgeInsets.fromLTRB(2, 10, 2, 0),
@@ -35,49 +36,72 @@ class _HomePageState extends State<HomePage> {
               Text("확진 환자"),
             ],
           ),
-          Container(
-            margin: EdgeInsets.fromLTRB(2, 5, 2, 10),
-            child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  children: [
-                    Icon(
-                      CupertinoIcons.triangle_fill,
-                      color: Colors.red,
-                      size: 12,
-                    ),
-                    Text(
-                      "1,212",
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+          FutureBuilder(
+            future: _fetch1(),
+            builder: (context, snapshot) {
+              //해당 부분은 data를 아직 받아 오지 못했을때 실행되는 부분을 의미한다.
+              if (snapshot.hasData == false) {
+                return CircularProgressIndicator();
+              }
+              //error가 발생하게 될 경우 반환하게 되는 부분
+              else if (snapshot.hasError) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Error: ${snapshot.error}',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                );
+              }
+              // 데이터를 정상적으로 받아오게 되면 다음 부분을 실행하게 되는 것이다.
+              else {
+                return Container(
+                  margin: EdgeInsets.fromLTRB(2, 5, 2, 10),
                   child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
+                      Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.triangle_fill,
+                            color: Colors.red,
+                            size: 12,
+                          ),
+                          Text(
+                            cronaData.decide.toString(),
+                            style:
+                            TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
                       Container(
-                        margin: EdgeInsets.fromLTRB(5, 20, 2, 1),
-                        child: Icon(
-                          Icons.show_chart,
-                          color: Color(0xffc9c9c9),
-                          size: 12,
+                        margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(5, 20, 2, 1),
+                              child: Icon(
+                                Icons.show_chart,
+                                color: Color(0xffc9c9c9),
+                                size: 12,
+                              ),
+                            ),
+                            Text(
+                              "162,753",
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
                       ),
-                      Text(
-                        "162,753",
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold),
-                      )
                     ],
                   ),
-                ),
-              ],
-            ),
-          ),
+                );
+              }
+            },),
+
+
           IntrinsicHeight(
             child: Row(
               children: [
@@ -85,7 +109,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("검사 중 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
-                    Text("2,748",
+                    Text(cronaData.exam.toString(),
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -98,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("격리해제 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
-                    Text("740",
+                    Text(cronaData.exam.toString(),
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -108,10 +132,20 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+
+  }
+  Future<String> _fetch1() async {
+
+
+
+
+    return "dkdkd";
   }
 
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Container(
@@ -148,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                       size: 16,
                     ),
                   ),
-                  Text(" 06.30 00:00 기준",
+                  Text(cBoard.date,
                       style: TextStyle(color: Colors.grey, fontSize: 11)),
                 ]),
                 buildConfirmedCases(),
@@ -214,38 +248,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                     ),
-                    // TextButton(
-                    //     onPressed: () async {
-                    //       //api호출하고 res까지만 받은 상태 1.date값 datenow로 변경,2.xml data parsing
-                    //
-                    //       final queryParameters = {
-                    //         //하하 % URI 인코딩이 뭐가 문제가 있다 %를 25로 문제!!
-                    //         'serviceKey': Uri.decodeFull(
-                    //             "M8J0A7jAfaLHLHj9D0X1lnYa4XJtbC4fuymKw4y81OniBFdyb1IeE%2BZXE4A7WE0RfhlVO%2Bd2tuxIZ4qH5fmBQQ%3D%3D"),
-                    //         'pageNo': '1',
-                    //         'numOfRows': '2',
-                    //         'startCreateDt': '20210703',
-                    //         'endCreateDt': '20210704'
-                    //       };
-                    //       var url = Uri.http(
-                    //           "openapi.data.go.kr",
-                    //           "/openapi/service/rest/Covid19/getCovid19InfStateJson",
-                    //           queryParameters);
-                    //       var response = await http.get(url);
-                    //       if (response.statusCode == 200) {
-                    //         // print( DateTime.now());
-                    //         // print(url);
-                    //         print(response.body);
-                    //         // var jsonResponse =
-                    //         // convert.jsonDecode(response.body) as Map<String, dynamic>;
-                    //         // var itemCount = jsonResponse['totalItems'];
-                    //         // print('Number of books about http: $itemCount.');
-                    //       } else {
-                    //         print(
-                    //             'Request failed with status: ${response.statusCode}.');
-                    //       }
-                    //     },
-                    //     child: Text("데이터 test")),
+
+
                     Container(
                       padding: EdgeInsets.fromLTRB(7, 0, 7, 0),
                       //margin: EdgeInsets.fromLTRB(2, 0, 2, 0),
@@ -272,6 +276,67 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
+                TextButton(onPressed: (){
+                  setState(() {
+                    
+                  });
+
+                  //print(cBoard.date);
+                  print(cronaData.date);
+                }, child: Text("이 버튼 안누르면 코로나 현황이 안보여 하ㅏ하하")),
+                // TextButton(
+                //     onPressed: () async {
+                //       var today = DateFormat("yyyyMMdd").format(DateTime.now());
+                //       var yesterday = DateFormat("yyyyMMdd").format(DateTime(
+                //         DateTime.now().subtract(Duration(days: 1)).year,
+                //         DateTime.now().subtract(Duration(days: 1)).month,
+                //         DateTime.now().subtract(Duration(days: 1)).day,
+                //       ));
+                //
+                //
+                //       //api호출하고 res까지만 받은 상태 1.date값 datenow로 변경,2.xml data parsing
+                //       final queryParameters = {
+                //         //하하 % URI 인코딩이 뭐가 문제가 있다 %를 25로 문제!!
+                //         'serviceKey': Uri.decodeFull(
+                //             "M8J0A7jAfaLHLHj9D0X1lnYa4XJtbC4fuymKw4y81OniBFdyb1IeE%2BZXE4A7WE0RfhlVO%2Bd2tuxIZ4qH5fmBQQ%3D%3D"),
+                //         'pageNo': '1',
+                //         'numOfRows': '2',
+                //         'startCreateDt':yesterday ,
+                //         'endCreateDt': today
+                //       };
+                //       var url = Uri.http(
+                //           "openapi.data.go.kr",
+                //           "/openapi/service/rest/Covid19/getCovid19InfStateJson",
+                //           queryParameters);
+                //
+                //       var response = await http.get(url);//api 요청
+                //       if (response.statusCode == 200) {//정상일 경우
+                //         final xml = response.body;//boy값만 xml
+                //         final xml2json = Xml2Json()..parse(xml);
+                //         final json = xml2json.toParker();//xml을 json형식으로
+                //
+                //         final coronaJson = convert.jsonDecode(json)["response"]["body"]["items"]["item"];//필요한 값만
+                //         // print(coronaJson);
+                //
+                //         var decide,clear,exam,date;
+                //         print(coronaJson[0]);
+                //         // print(coronaJson[0]["decideCnt"]);
+                //         // print(coronaJson[1]["decideCnt"]);
+                //
+                //         date = coronaJson[0]["stateDt"]+" "+coronaJson[0]["stateTime"];
+                //         date = date.substring(4);
+                //         date = date.substring(0,2)+"."+date.substring(2);//기준시간
+                //         decide = int.parse(coronaJson[0]["decideCnt"]) - int.parse(coronaJson[1]["decideCnt"]);//확진자
+                //         clear = int.parse(coronaJson[0]["clearCnt"]) - int.parse(coronaJson[1]["clearCnt"]);//격리해제
+                //         exam = int.parse(coronaJson[0]["examCnt"]) - int.parse(coronaJson[1]["examCnt"]);//검사자
+                //
+                //       } else {
+                //         print(
+                //             'Request failed with status: ${response.statusCode}.');
+                //       }
+                //     },
+                //     child: Text("데이터 test")),
+
               ])),
           Row(children: [
             Container(
@@ -394,7 +459,8 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 1,
                               fit: FlexFit.tight,
-                              child: Icon(CupertinoIcons.time,color: Color(0xff6382f4)),
+                              child: Icon(CupertinoIcons.time,color: Color(
+                                  0xff6382f4)),
                             ),
                             Flexible(
                               flex: 1,
@@ -422,7 +488,9 @@ class _HomePageState extends State<HomePage> {
                   flex: 1,
                   fit: FlexFit.loose,
                   child: ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
+
+                      await FirebaseMessaging.instance.subscribeToTopic('All');//토픽 추가하는 부분
                       print(FirebaseAuth.instance.currentUser);
                       Navigator.push(
                         context,
@@ -446,4 +514,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ])));
   }
+
+
 }
