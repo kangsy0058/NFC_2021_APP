@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import './utils.dart';
@@ -81,9 +82,6 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
     }
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,12 +111,12 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             calendarFormat: _calendarFormat,
             rangeSelectionMode: _rangeSelectionMode,
             eventLoader: _getEventsForDay,
-            startingDayOfWeek: StartingDayOfWeek.monday,
+            startingDayOfWeek: StartingDayOfWeek.sunday,
             calendarStyle: CalendarStyle(
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
-            onDaySelected:  _onDaySelected,
+            onDaySelected: _onDaySelected,
             onRangeSelected: _onRangeSelected,
             onFormatChanged: (format) {
               if (_calendarFormat != format) {
@@ -130,12 +128,27 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             onPageChanged: (focusedDay) {
               _focusedDay = focusedDay;
             },
-            headerStyle: HeaderStyle(
-                formatButtonVisible: false,
-                titleCentered: true
-            ),
+            headerStyle:
+                HeaderStyle(formatButtonVisible: false, titleCentered: true),
           ),
           const SizedBox(height: 8.0),
+          Row(children: [
+            Container(
+              padding: EdgeInsets.only(left: 20,top:20,bottom: 5),
+              child: Text(
+                '${new DateFormat.d('ko_KR').format(_focusedDay)}',
+                style: TextStyle(
+                  fontSize: 17,
+                ),
+              ), //d가 day인데 w는 없다..
+            ),
+          ]),
+          Divider(
+            height: 20,
+            thickness: 1,
+            indent: 15,
+            endIndent: 15,
+          ), // 구분선
           Expanded(
             child: ValueListenableBuilder<List<Event>>(
               valueListenable: _selectedEvents,
@@ -149,8 +162,15 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
                         vertical: 4.0,
                       ),
                       decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(12.0),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(18.0),
+                        boxShadow: [
+                          BoxShadow(
+                          color: Colors.grey,
+                          offset: Offset(0, 1.3),
+                          ),
+                        ],
                       ),
                       child: ListTile(
                         onTap: () => print('${value[index]}'),
