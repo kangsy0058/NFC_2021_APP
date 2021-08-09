@@ -5,7 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_app21/data/corna.dart';
-
+import 'package:nfc_app21/basics_example.dart';
 import 'package:nfc_app21/log_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -494,7 +494,7 @@ class _HomePageState extends State<HomePage> {
                       print(FirebaseAuth.instance.currentUser);
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => LogPage()),
+                        MaterialPageRoute(builder: (context) => TableBasicsExample()),
                       );
                     },
                     style: ElevatedButton.styleFrom(

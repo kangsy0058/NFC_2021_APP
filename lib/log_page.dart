@@ -73,7 +73,14 @@ class _LogPageState extends State<LogPage> {
                     fontFamily: 'Cafe24'),
               ),
             ),
-            Expanded(child: TableBasicsExample()),
+            const SizedBox(height: 12.0),
+            ElevatedButton(
+              child: Text('Events'),
+              onPressed: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => TableBasicsExample()),
+              ),
+            ),
             Container(
               padding: EdgeInsets.only(left: 30),
               width: MediaQuery.of(context).size.width,
