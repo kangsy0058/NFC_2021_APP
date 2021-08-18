@@ -39,7 +39,7 @@ dependencies:
   xml2json: ^5.3.1
   flutter_barcode_scanner: ^2.0.0
   nfc_in_flutter: ^2.0.5
-
+  image_picker: ^0.8.3+2
 
 
   # The following adds the Cupertino Icons font to your application.

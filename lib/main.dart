@@ -1,6 +1,7 @@
 // @dart=2.9
 
 import 'dart:ffi';
+import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
@@ -144,6 +146,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
+  PickedFile _image;
 
   int selectedIndex = 0;
   final List<Widget> _children = [HomePage(), LogPage(), SettingPage()];
@@ -317,4 +321,14 @@ class _AppState extends State<App> {
 
     );
   }
+  // Widget showIamge(){
+  //   if(_image)
+  // }
+  Future getImage(ImageSource imageSource) async{
+    PickedFile image = await ImagePicker.platform.pickImage(source: imageSource);
+    setState((){
+      _image = image;
+    });
+  }
 }
+
