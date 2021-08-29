@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nfc_app21/home_page.dart';
@@ -27,25 +28,84 @@ Future<void> main() async {
   initializeDateFormatting().then((_) => runApp(Myapp()));
 }
 
-
-
 class Myapp extends StatelessWidget {
+  final UserController user = Get.put(UserController());
   @override
   Widget build(BuildContext context) {
+
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // 투명색
     ));
-
-    return MaterialApp(
+    return GetMaterialApp(
       title: "firetest",
       home: fbApp(),
+      // home: Test(),
+
     );
   }
 }
 
+class UserController extends GetxController{
+  var WSN = "_".obs;
+  var PSN= "_".obs;
+  var isUser = false.obs;
+
+
+  // var cnt = 0.obs;
+  getWSN(){
+    return "TWSN1234".obs;
+  }
+  getPSN(){
+    return "TPSN1234".obs;
+  }
+  inputWSN() {
+    return this.WSN;
+  }
+  inputPSN(var PSN) {
+    this.WSN = getPSN();
+    return this.PSN;
+  }
+  // increment(){
+  //   return cnt++;
+  // }
+}
+
+class Test extends StatelessWidget {
+  @override
+  Widget build(context) {
+    // Get.put()을 사용하여 클래스를 인스턴스화하여 모든 "child'에서 사용가능하게 합니다.
+    final UserController user = Get.put(UserController());
+    return Scaffold(
+      // count가 변경 될 때마다 Obx(()=> 를 사용하여 Text()에 업데이트합니다.
+        appBar: AppBar(title: Obx(() => Text("Clicks: ${user.WSN}"))),
+
+        // 8줄의 Navigator.push를 간단한 Get.to()로 변경합니다. context는 필요없습니다.
+        body: Column(
+          children: [
+            Center(child: ElevatedButton(
+                child: Text("Go to Other"), onPressed: () => Get.to(Other()))),
+          ],
+        ),
+        floatingActionButton:
+        FloatingActionButton(child: Icon(Icons.add), onPressed: (){
+          user.inputWSN();
+        }));
+  }
+}
+class Other extends StatelessWidget {
+  // 다른 페이지에서 사용되는 컨트롤러를 Get으로 찾아서 redirect 할 수 있습니다.
+  final UserController c = Get.find();
+  @override
+  Widget build(context){
+    // 업데이트된 count 변수에 연결
+    return Scaffold(body: Center(child: Text("${c.WSN}")));
+  }
+}
+
+
 
 Container buildAccountOption(
-    BuildContext context, String title, String str, IconData icn) {
+    BuildContext context, String title, var str, IconData icn) {
   return Container(
       width: MediaQuery.of(context).size.width * 0.58,
       height: MediaQuery.of(context).size.height * 0.05,
@@ -76,7 +136,7 @@ Container buildAccountOption(
                             Flexible(
                               child: TextField(
                                 decoration: new InputDecoration.collapsed(
-                                    hintText: str),
+                                    hintText: "$str"),
                               ),
                             ),
                             Container(
@@ -99,6 +159,7 @@ Container buildAccountOption(
                       },
                       child: Center(
                         child: OutlinedButton(
+
                           style: OutlinedButton.styleFrom(
                               backgroundColor: Color(0xff8aadf8),
                               //padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -123,7 +184,7 @@ Container buildAccountOption(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              str,
+              "$str",
               textAlign: TextAlign.left,
             ),
             Icon(icn),
@@ -177,6 +238,8 @@ class _AppState extends State<App> {
     });
   }
 
+  final UserController user = Get.find();
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
@@ -221,10 +284,10 @@ class _AppState extends State<App> {
                       thickness: 3,
                     ),
                     Text("개인 안심번호"),
-                    buildAccountOption(context, "개인안심번호", "누70카63",
+                    buildAccountOption(context, "개인안심번호",user.WSN,
                         CupertinoIcons.photo_on_rectangle),
                     Text("디바이스 ID"),
-                    buildAccountOption(context, "디바이스 ", "WSN1234",
+                    buildAccountOption(context, "디바이스 ",user.PSN,
                         CupertinoIcons.pencil_ellipsis_rectangle),
                     Text("알림"),
                     Container(

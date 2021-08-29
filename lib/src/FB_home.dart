@@ -32,12 +32,12 @@ class _fb_homeState extends State<fb_home> {
   @override
   Widget build(BuildContext context) {
     String _scanBarcode = 'Unknown';
-    if (!_supportsNFC) {
-      return ElevatedButton(
-        child: const Text("You device does not support NFC"),
-        onPressed: null,
-      );
-    }
+    // if (!_supportsNFC) {
+    //   return ElevatedButton(
+    //     child: const Text("You device does not support NFC"),
+    //     onPressed: null,
+    //   );
+    // }
 
 
     return Scaffold(
@@ -102,8 +102,6 @@ class _fb_homeState extends State<fb_home> {
               //       ],
               //     ),
               //   );
-
-
                return App();
 
 

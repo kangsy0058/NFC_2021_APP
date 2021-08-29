@@ -83,9 +83,9 @@ class LoginWidget extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
-
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image.asset("imgs/test.png",fit: BoxFit.fitHeight,),
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: SignInButton(Buttons.Google, onPressed: signInWithGoogle),

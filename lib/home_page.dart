@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:nfc_app21/data/corna.dart';
 import 'package:nfc_app21/basics_example.dart';
 import 'package:nfc_app21/log_page.dart';
+import 'package:nfc_app21/main.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -136,12 +138,10 @@ class _HomePageState extends State<HomePage> {
   }
   Future<String> _fetch1() async {
 
-
-
-
     return "dkdkd";
   }
 
+  final UserController user = Get.find();
   @override
   Widget build(BuildContext context) {
 
@@ -235,7 +235,7 @@ class _HomePageState extends State<HomePage> {
                             "개인 안심번호",
                             style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
-                          Text("누70카63",
+                          Text("${user.PSN}",
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold)),
                         ],
@@ -261,7 +261,7 @@ class _HomePageState extends State<HomePage> {
                           Text("디바이스 ID",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.grey)),
-                          Text("WSN1234",
+                          Text("${user.WSN}",
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold))
                         ],
@@ -489,13 +489,13 @@ class _HomePageState extends State<HomePage> {
                   fit: FlexFit.loose,
                   child: ElevatedButton(
                     onPressed: () async {
-
-                      await FirebaseMessaging.instance.subscribeToTopic('All');//토픽 추가하는 부분
-                      print(FirebaseAuth.instance.currentUser);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => TableBasicsExample()),
-                      );
+                      Get.to(()=>TableBasicsExample());
+                      //await FirebaseMessaging.instance.subscribeToTopic('All');//토픽 추가하는 부분
+                      //print(FirebaseAuth.instance.currentUser);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => TableBasicsExample()),
+                      // );
                     },
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
