@@ -4,7 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:get/get.dart';
 import 'package:nfc_app21/data/user.dart';
+import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/main.dart';
 import 'package:nfc_app21/src/login.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
@@ -29,6 +31,8 @@ class _fb_homeState extends State<fb_home> {
       });
     });
   }
+  final UserController user = Get.put(UserController());
+
   @override
   Widget build(BuildContext context) {
     String _scanBarcode = 'Unknown';
@@ -102,7 +106,13 @@ class _fb_homeState extends State<fb_home> {
               //       ],
               //     ),
               //   );
-               return App();
+              //  return App();
+
+            if(user.isUser.value){
+              return App();
+            }else{
+              return DataInitPage();
+            }
 
 
           }

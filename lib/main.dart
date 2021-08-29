@@ -16,6 +16,8 @@ import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
 import 'package:nfc_app21/setting_page.dart';
 import 'package:nfc_app21/src/FB.dart';
+import 'package:nfc_app21/src/FB_home.dart';
+import 'package:nfc_app21/src/login.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification.body}');
@@ -46,8 +48,8 @@ class Myapp extends StatelessWidget {
 }
 
 class UserController extends GetxController{
-  var WSN = "_".obs;
-  var PSN= "_".obs;
+  var WSN = "입력X".obs;
+  var PSN= "입력X".obs;
   var isUser = false.obs;
 
 
@@ -65,6 +67,19 @@ class UserController extends GetxController{
     this.WSN = getPSN();
     return this.PSN;
   }
+
+
+  check(){
+    isUser= true.obs;
+    return isUser;
+
+  }
+  checkOut(){
+    isUser= false.obs;
+    return isUser;
+
+  }
+
   // increment(){
   //   return cnt++;
   // }
@@ -361,7 +376,8 @@ class _AppState extends State<App> {
                                   onPressed: () {
                                     print("로그아웃");
                                     FirebaseAuth.instance.signOut();
-                                    Navigator.of(context).pop();
+                                    user.checkOut();
+                                    Get.offAll(()=>fb_home());
                                   }),
                             ],
                           ));

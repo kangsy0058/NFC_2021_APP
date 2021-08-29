@@ -237,7 +237,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           Text("${user.PSN}",
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold)),
+                                  fontSize: 13, fontWeight: FontWeight.bold)),
                         ],
                       ),
                       decoration: BoxDecoration(
