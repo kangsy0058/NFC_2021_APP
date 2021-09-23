@@ -52,7 +52,6 @@ class UserController extends GetxController{
   var PSN= "입력X".obs;
   var isUser = false.obs;
 
-
   // var cnt = 0.obs;
   getWSN(){
     return "TWSN1234".obs;
@@ -94,7 +93,6 @@ class Test extends StatelessWidget {
       // count가 변경 될 때마다 Obx(()=> 를 사용하여 Text()에 업데이트합니다.
         appBar: AppBar(title: Obx(() => Text("Clicks: ${user.WSN}"))),
 
-        // 8줄의 Navigator.push를 간단한 Get.to()로 변경합니다. context는 필요없습니다.
         body: Column(
           children: [
             Center(child: ElevatedButton(

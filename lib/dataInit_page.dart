@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/main.dart';
@@ -12,11 +17,134 @@ class DataInitPage  extends StatefulWidget {
 }
 
 class _DataInitPage extends State<DataInitPage> {
-  var visable = [false, false];
+  final textCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
+
+  var visable = [false, false, false, false];
+  String barcodeScanRes = "";
+
+
+  Dialog initWSN(h, w,TextEditingController textCon) {
+
+    ImagePicker picker = ImagePicker();
+    XFile? image;
+    String img64;
+
+    return Dialog(
+      child: Container(
+        height: h * 1.1,
+        width: w,
+        child: Column(
+          children: [
+            // image == null ? Text("d") : Image.file(File(image.path)),
+
+            OutlinedButton(onPressed: () async {
+              image = await picker.pickImage(source: ImageSource.gallery,);
+              print("이미지 경로임 :\n" + image!.path);
+              final bytes = File(image!.path).readAsBytesSync();
+
+              img64 = base64Encode(bytes);//이미지 바이트화
+              print("여기부터\n" + img64 + "여기까지\n");
+            }, child: Text("스샷 선택")),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: TextField(
+                controller: textCon,
+                decoration: InputDecoration(
+                  fillColor: Colors.lightBlueAccent,
+                  labelText: '개인안심번호',
+                  labelStyle: TextStyle(
+                    color: Colors.black,
+                  ),
+                ),
+
+              ),
+            ),
+            OutlinedButton(onPressed: () {
+              super.setState(() {
+                print(textCon.text);
+                textCon.text = textCon.text;
+
+
+              });
+              Get.back();
+
+
+            }, child: Text("완료")),
+
+
+          ],
+        ),
+      ),
+    );
+  }
+
+
+  Dialog initPSN(h, w,TextEditingController textCon) {
+    return Dialog(
+      child: Container(
+        height: h * 1.1,
+        width: w,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, h*0.1, 0, 0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment
+                    .spaceEvenly,
+                children: [
+                  OutlinedButton(
+                      onPressed: () {
+                        textCon.text = "testNFC";
+                        super.setState(() {
+
+                        });
+                        Get.back();
+
+                      }, child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Text("NFC", style: TextStyle(fontSize: w * 0.03),),
+                  )),
+                  OutlinedButton(
+                    onPressed: () async {
+                      barcodeScanRes =
+                      await FlutterBarcodeScanner.scanBarcode(
+                          "#8aadf8", "취소", false, ScanMode.DEFAULT);
+                      print("WSN출력 부분 @@@@@@@@"+barcodeScanRes);
+                      if(barcodeScanRes!=""){
+                        textCon.text = barcodeScanRes;
+                        super.setState(() {
+
+                        });
+                        Get.back();
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text(
+                        " QR ", style: TextStyle(fontSize: w * 0.03),),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: h * 0.7,
+              width: w,
+              child: Lottie.asset("assets/lottie/progress.json"),
+
+            )
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+
+
     final UserController user = Get.find();
+
     return Scaffold(
       appBar: AppBar(
           backgroundColor: Color(0xff8aadf8),
@@ -89,48 +217,22 @@ class _DataInitPage extends State<DataInitPage> {
                         .size
                         .width,
                     child: TextField(
+                      readOnly: true,
+                      controller: textCon[0],
                       onTap: () {
                         Get.dialog(
-                          Dialog(
-                            child: Container(
-                              height: 450,
-                              child: Column(
-                                children: [
-                                  // Text('${user.WSN}'),
-                                  Padding(
-                                    padding: const EdgeInsets.all(20.0),
-                                    child: Text("입력방식을 선택하세요.", style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                    )),
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment
-                                        .spaceEvenly,
-                                    children: [
-                                      OutlinedButton(
-                                          onPressed: () {}, child: Text("NFC")),
-                                      OutlinedButton(
-                                          onPressed: () {}, child: Text("QR")),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 300,
-                                    width:  300,
-                                    child: Lottie.asset("assets/lottie/progress.json"),
-
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                            initPSN(MediaQuery
+                                .of(context)
+                                .size
+                                .width, MediaQuery
+                                .of(context)
+                                .size
+                                .height,textCon[0])
                         );
                         setState(() {
-                          visable[0]=true;
+                          visable[0] = true;
                         });
                       },
-                      readOnly: true,
                       style: TextStyle(
                         color: Colors.white,
                       ),
@@ -157,32 +259,21 @@ class _DataInitPage extends State<DataInitPage> {
                           .size
                           .width,
                       child: TextField(
+                        controller: textCon[1],
                         readOnly: true,
                         onTap: () {
                           Get.dialog(
-                            Dialog(
-                              child: Container(
-                                height: 450,
-                                child: Column(
-                                  children: [
-                                    // Text('${user.WSN}'),
-                                    Padding(
-                                      padding: const EdgeInsets.all(20.0),
-                                      child: Text("개인안심번호 스샷 and text입력받기", style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w500,
-                                      )),
-                                    ),
-                                   
-                                    
-                                  ],
-                                ),
-                              ),
-                            ),
+                              initWSN(MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width, MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height,textCon[1])
+
                           );
                           setState(() {
-                            visable[1]=true;
+                            visable[1] = true;
                           });
                         },
                         style: TextStyle(
@@ -204,7 +295,72 @@ class _DataInitPage extends State<DataInitPage> {
                   visible: visable[1],
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 40, right: 50, left: 200),
+                        top: 50, left: 50, right: 50),
+                    child: Container(
+                      height: 60,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      child: TextField(
+                        onTap: () {
+                          setState(() {
+                            visable[2] = true;
+                          });
+                        },
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          fillColor: Colors.lightBlueAccent,
+                          labelText: '이름',
+                          labelStyle: TextStyle(
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: visable[2],
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 50, left: 50, right: 50),
+                    child: Container(
+                      height: 60,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      child: TextField(
+                        // readOnly: true,
+                        onTap: () {
+                          setState(() {
+                            visable[3] = true;
+                          });
+                        },
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          fillColor: Colors.lightBlueAccent,
+                          labelText: '이메일',
+                          labelStyle: TextStyle(
+                            color: Colors.white70,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: visable[3],
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                        top: 40, right: 50, left: 50),
                     child: Container(
                       alignment: Alignment.bottomRight,
                       height: 50,
@@ -238,16 +394,15 @@ class _DataInitPage extends State<DataInitPage> {
                           setState(() {
 
                           });
-
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              'OK',
+                              '시작',
                               style: TextStyle(
                                 color: Colors.lightBlueAccent,
-                                fontSize: 14,
+                                fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -261,6 +416,7 @@ class _DataInitPage extends State<DataInitPage> {
                     ),
                   ),
                 ),
+
               ],
             ),
           ],
