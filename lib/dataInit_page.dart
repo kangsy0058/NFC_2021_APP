@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -5,11 +6,13 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/main.dart';
+import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 
 class DataInitPage  extends StatefulWidget {
   @override
@@ -17,6 +20,9 @@ class DataInitPage  extends StatefulWidget {
 }
 
 class _DataInitPage extends State<DataInitPage> {
+  bool _reading = false;
+  StreamSubscription<NDEFMessage>? _stream;
+
   final textCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
 
   var visable = [false, false, false, false];
@@ -80,6 +86,7 @@ class _DataInitPage extends State<DataInitPage> {
 
 
   Dialog initPSN(h, w,TextEditingController textCon) {
+
     return Dialog(
       child: Container(
         height: h * 1.1,
@@ -94,12 +101,13 @@ class _DataInitPage extends State<DataInitPage> {
                 children: [
                   OutlinedButton(
                       onPressed: () {
-                        textCon.text = "testNFC";
+                        FlutterNfcReader.read().then((value){
+                          textCon.text = value.id;
+                          Get.back();
+                        });
                         super.setState(() {
 
                         });
-                        Get.back();
-
                       }, child: Padding(
                     padding: const EdgeInsets.all(20.0),
                     child: Text("NFC", style: TextStyle(fontSize: w * 0.03),),
@@ -141,8 +149,6 @@ class _DataInitPage extends State<DataInitPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     final UserController user = Get.find();
 
     return Scaffold(
