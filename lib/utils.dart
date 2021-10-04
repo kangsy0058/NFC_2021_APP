@@ -5,7 +5,6 @@ import 'package:table_calendar/table_calendar.dart';
 /// Example event class.
 class Event {
   final String title;
-
   const Event(this.title);
 
   @override
@@ -20,14 +19,14 @@ final kEvents = LinkedHashMap<DateTime, List<Event>>(
   hashCode: getHashCode,
 )..addAll(_kEventSource);
 
-final _kEventSource = Map.fromIterable(List.generate(50, (index) => index),
+final _kEventSource = Map.fromIterable(List.generate(40, (index) => index),
     key: (item) => DateTime.utc(kFirstDay.year, kFirstDay.month, item * 5),
     value: (item) => List.generate(
         item % 4 + 1, (index) => Event('2공학관 $item | ${index + 1}')))
   ..addAll({
     kToday: [
-      Event('2공학관\'s Event 1'),
-      Event('강석규 교육관\'s Event 2'),
+      Event('14:00\t    제2공학관                                    \t36.5'),
+      Event('15:45\t    강석규 교육관                             \t36.5'),
     ],
   });
 

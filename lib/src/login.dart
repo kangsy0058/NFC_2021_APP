@@ -83,21 +83,25 @@ class LoginWidget extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset("imgs/test.png",fit: BoxFit.fitHeight,),
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.fromLTRB(30, 50, 10, 40),
+              child: Image.asset("imgs/logo.png",fit: BoxFit.fitHeight,),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
               child: SignInButton(Buttons.Google, onPressed: signInWithGoogle),
             ),
 
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const  EdgeInsets.fromLTRB(10, 20, 10, 10),
               child: SignInButton(Buttons.AppleDark, onPressed: signInWithKakao),
             ),
 
             Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const  EdgeInsets.fromLTRB(10, 20, 10, 10),
               child: SignInButton(Buttons.Email, onPressed: testSigIn),
             ),
           ],

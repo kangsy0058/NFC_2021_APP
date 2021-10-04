@@ -57,8 +57,8 @@ class _LogPageState extends State<LogPage> {
   @override
   Widget build(BuildContext context) {
 
-    Color mainC = Color(0xff6382f4);
-    Color subC = Color(0xff8aadf8);
+    Color mainC =  Color(0xffff4c11);
+    Color subC = Color(0xffff7f55);
 
 
     return Scaffold(

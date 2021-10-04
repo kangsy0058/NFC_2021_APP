@@ -230,7 +230,7 @@ class _AppState extends State<App> {
 
   var _currentIndex = 0;
 
-  List listItem = ['ALL', '긴급', '?머더라'];
+  List listItem = ['ALL', '긴급'];
 
   String valueChoose = 'ALL';
 
@@ -350,37 +350,68 @@ class _AppState extends State<App> {
                 Center(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0xff8aadf8),
+                        backgroundColor: Color(0xffff7f55),
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
                     onPressed: () {
                       return showDialog(
-                          context: context,
-                          builder: (_) =>
-                          new CupertinoAlertDialog(
-                            content: Text("정말 로그아웃 하시겠습니까?"),
-                            actions: [
-                              CupertinoDialogAction(
-                                  child: Text(
-                                    "취소",
-                                    style: TextStyle(
-                                        color: Colors.grey, fontSize: 14),
-                                  ),
-                                  onPressed: () => Navigator.of(context).pop()),
-                              CupertinoDialogAction(
-                                  child: Text(
-                                    "확인",
-                                    style: TextStyle(fontSize: 14),
-                                  ),
-                                  onPressed: () {
-                                    print("로그아웃");
-                                    FirebaseAuth.instance.signOut();
-                                    user.checkOut();
-                                    Get.offAll(()=>fb_home());
-                                  }),
-                            ],
-                          ));
+                        context: context,
+                        builder: (_) =>
+                            Dialog(
+                              child: Container(
+                                width: 100,
+                                height: 170,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Text("로그아웃 하시겠습니까?", style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        ElevatedButton(
+                                          onPressed: ()  {
+                                            Get.back();
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10)),
+                                              primary:  Colors.grey,
+                                              onPrimary: Colors.white,
+                                              minimumSize: Size(120, 50),
+                                              //width, height
+                                              alignment: Alignment.center,
+                                              textStyle: const TextStyle(fontSize: 18)),
+                                          child: Text("취소"), //번호
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: ()  {
+                                            FirebaseAuth.instance.signOut();
+                                            user.checkOut();
+                                            Get.offAll(()=> fb_home());
+                                          },
+                                          style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(10)),
+                                              primary:  Color(0xffff4c11),
+                                              onPrimary: Colors.white,
+                                              minimumSize: Size(120, 50),
+                                              //width, height
+                                              alignment: Alignment.center,
+                                              textStyle: const TextStyle(fontSize: 18)),
+
+                                          child: Text("확인"), //번호
+                                        ),
+                                        
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                      );
                     },
                     //FirebaseAuth.instance.signOut, //현재 로그인한 사용자 로그아웃
                     child: Text(

@@ -91,9 +91,9 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
         iconTheme: IconThemeData(color: Colors.grey),
         elevation: 0,
         title: Text(
-          "상세 기록",
+          "온도 기록",
           style: TextStyle(
-              color: Color(0xff6382f4),
+              color: Color(0xffff4c11),
               fontWeight: FontWeight.w900,
               fontFamily: 'Cafe24'),
         ),
@@ -113,6 +113,11 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             eventLoader: _getEventsForDay,
             startingDayOfWeek: StartingDayOfWeek.sunday,
             calendarStyle: CalendarStyle(
+              markersMaxCount: 1,
+              markerDecoration: BoxDecoration(color:Color(0xffff4c11),shape:BoxShape.circle),
+              //weekendTextStyle: TextStyle().copyWith(color: Colors.red),
+              selectedDecoration: BoxDecoration(color: Color(0xffff7f55),shape:BoxShape.circle ),// 선택 날짜 데코
+              todayDecoration:  BoxDecoration(color:Color(0xffDBC7BA),shape:BoxShape.circle ), //오늘 날짜 데코
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
@@ -130,6 +135,8 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             },
             headerStyle:
                 HeaderStyle(formatButtonVisible: false, titleCentered: true),
+
+
           ),
           const SizedBox(height: 8.0),
           Row(children: [
@@ -144,6 +151,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             ),
           ]),
           Divider(
+            color: Color(0xffff4c11),
             height: 20,
             thickness: 1,
             indent: 15,
@@ -157,18 +165,20 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
                   itemCount: value.length,
                   itemBuilder: (context, index) {
                     return Container(
+
                       margin: const EdgeInsets.symmetric(
                         horizontal: 12.0,
                         vertical: 4.0,
                       ),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        border: Border.all(color: Colors.white),
+                      decoration:
+                      BoxDecoration(
+                        color: Color(0xffFFFCFA),
+                        border: Border.all( width: 2,color: Color(0xffffbfaa),),
                         borderRadius: BorderRadius.circular(18.0),
                         boxShadow: [
                           BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0, 1.3),
+                            color: Colors.grey,
+                            offset: Offset(0,2),
                           ),
                         ],
                       ),
