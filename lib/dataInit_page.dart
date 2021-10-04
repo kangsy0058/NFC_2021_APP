@@ -18,7 +18,10 @@ class DataInitPage  extends StatefulWidget {
   @override
   _DataInitPage createState() => _DataInitPage();
 }
-
+Color mainColor = Color(0xffff7f55); // 22 찐
+Color pointColor = Color(0xffff4c11); // 가장 찐
+Color borderColor = Color(0xffffbfaa);// 3 찐
+Color backColor = Color(0xffFFFCFA);// 배경
 class _DataInitPage extends State<DataInitPage> {
   bool _reading = false;
   StreamSubscription<NDEFMessage>? _stream;
@@ -88,18 +91,26 @@ class _DataInitPage extends State<DataInitPage> {
   Dialog initPSN(h, w,TextEditingController textCon) {
 
     return Dialog(
-      child: Container(
+      child:
+      Container(
         height: h * 1.1,
         width: w,
         child: Column(
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB(0, h*0.1, 0, 0),
-              child: Row(
+              child: Center(
+                child: Text("STEP1. 디바이스 등록",style: TextStyle(color: mainColor, fontSize: w*0.03, fontWeight: FontWeight.w500 ),),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0, h*0.04, 0, 0),
+              child:
+              Row(
                 mainAxisAlignment: MainAxisAlignment
                     .spaceEvenly,
                 children: [
-                  OutlinedButton(
+                  ElevatedButton(
                       onPressed: () {
                         FlutterNfcReader.read().then((value){
                           textCon.text = value.id;
@@ -108,11 +119,19 @@ class _DataInitPage extends State<DataInitPage> {
                         super.setState(() {
 
                         });
-                      }, child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Text("NFC", style: TextStyle(fontSize: w * 0.03),),
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape:  RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                          primary: Colors.orange,
+                          onPrimary: Colors.white,
+                          alignment: Alignment.center,
+                      ),
+                      child: Padding(
+                    padding:  EdgeInsets.all(w*0.011),
+                    child: Text("NFC로 등록", style: TextStyle(fontSize: w * 0.02),),
                   )),
-                  OutlinedButton(
+                  ElevatedButton(
                     onPressed: () async {
                       barcodeScanRes =
                       await FlutterBarcodeScanner.scanBarcode(
@@ -126,20 +145,46 @@ class _DataInitPage extends State<DataInitPage> {
                         Get.back();
                       }
                     },
+                    style: ElevatedButton.styleFrom(
+                      shape:  RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      primary: Colors.black12,
+                      onPrimary: Colors.white,
+                      alignment: Alignment.center,
+                    ),
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(w*0.011),
                       child: Text(
-                        " QR ", style: TextStyle(fontSize: w * 0.03),),
+                        " QR로 등록 ", style: TextStyle(fontSize: w * 0.02),),
                     ),
                   ),
                 ],
               ),
             ),
-            SizedBox(
-              height: h * 0.7,
-              width: w,
-              child: Lottie.asset("assets/lottie/progress.json"),
-
+            Center(
+              heightFactor: h*0.01,
+              child: Text("NFC로 등록 안내",
+                style: TextStyle(
+                    fontSize: w * 0.02,
+                    fontWeight: FontWeight.w800
+                ),
+              ),
+            ),
+            Center(
+                heightFactor: h*0.001 ,
+              widthFactor: w*0.02,
+              child: Column(
+                children: [
+                  Padding(
+                    padding:  EdgeInsets.fromLTRB(0, h*0.1, 0, h*0.01),
+                    child: Text("1. 스마트폰의 NFC이 켜져있는지 확인해주세요."),
+                  ),
+                  Padding(
+                    padding:  EdgeInsets.fromLTRB(0, h*0.1, 0, h*0.01),
+                    child: Text("2. 디바이스를 스마트폰 뒷면에 태그해주세요."),
+                  ),
+                ],
+              )
             )
           ],
         ),
@@ -153,12 +198,12 @@ class _DataInitPage extends State<DataInitPage> {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xff8aadf8),
+          backgroundColor: backColor,
           elevation: 0,
           title: Text(
             "온기",
             style: TextStyle(
-                color: Colors.white,
+                color: pointColor,
                 fontWeight: FontWeight.w900,
                 fontFamily: 'Cafe24'),
           ),
@@ -169,7 +214,7 @@ class _DataInitPage extends State<DataInitPage> {
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
-              colors: [Color(0xff8aadf8), Colors.indigo]),
+              colors: [backColor, borderColor]),
         ),
         child: ListView(
           children: <Widget>[
@@ -177,15 +222,15 @@ class _DataInitPage extends State<DataInitPage> {
               children: <Widget>[
                 Row(children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 60, left: 20),
+                    padding: const EdgeInsets.only(top: 0, left: 30),
                     child: RotatedBox(
-                        quarterTurns: -1,
+                        quarterTurns: 0,
                         child: Text(
-                          '시작하기',
+                          '온\n기\n',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Colors.black,
                             fontSize: 38,
-                            fontWeight: FontWeight.w900,
+                            fontWeight: FontWeight.w200,
                           ),
                         )),
                   ),
@@ -194,7 +239,7 @@ class _DataInitPage extends State<DataInitPage> {
                     child: Container(
                       //color: Colors.green,
                       height: 200,
-                      width: 170,
+                      width: 300,
                       child: Column(
                         children: <Widget>[
                           Container(
@@ -202,10 +247,10 @@ class _DataInitPage extends State<DataInitPage> {
                           ),
                           Center(
                             child: Text(
-                              '디바이스 ID와 개인안심번호를 입력하세요.',
+                              '디바이스와 개인안심번호 등록',
                               style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
+                                fontSize: 20,
+                                color: Colors.black,
                               ),
                             ),
                           ),
@@ -240,14 +285,14 @@ class _DataInitPage extends State<DataInitPage> {
                         });
                       },
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         fillColor: Colors.lightBlueAccent,
-                        labelText: '디바이스ID',
+                        labelText: 'STEP1. 디바이스 등록',
                         labelStyle: TextStyle(
-                          color: Colors.white70,
+                          color: Colors.black,
                         ),
                       ),
                     ),
@@ -283,14 +328,14 @@ class _DataInitPage extends State<DataInitPage> {
                           });
                         },
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           fillColor: Colors.lightBlueAccent,
-                          labelText: '개인 안심번호',
+                          labelText: 'STEP2. 개인 안심번호 등록',
                           labelStyle: TextStyle(
-                            color: Colors.white70,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -315,14 +360,14 @@ class _DataInitPage extends State<DataInitPage> {
                           });
                         },
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           fillColor: Colors.lightBlueAccent,
-                          labelText: '이름',
+                          labelText: 'STEP3. 이름',
                           labelStyle: TextStyle(
-                            color: Colors.white70,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -348,14 +393,14 @@ class _DataInitPage extends State<DataInitPage> {
                           });
                         },
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           fillColor: Colors.lightBlueAccent,
-                          labelText: '이메일',
+                          labelText: 'STEP4. 이메일',
                           labelStyle: TextStyle(
-                            color: Colors.white70,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -407,14 +452,14 @@ class _DataInitPage extends State<DataInitPage> {
                             Text(
                               '시작',
                               style: TextStyle(
-                                color: Colors.lightBlueAccent,
+                                color: Colors.black,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             Icon(
                               Icons.arrow_forward,
-                              color: Colors.lightBlueAccent,
+                              color: Colors.black,
                             ),
                           ],
                         ),
