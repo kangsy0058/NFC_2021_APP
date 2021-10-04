@@ -145,6 +145,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
+    Color mainColor = Color(0xffFF4830); // 22 찐
+    Color pointColor = Color(0xffF037A5); // 가장 찐
+    Color borderColor = Color(0xffF037A5);// 3 찐
+    Color backColor = Color(0xfffafbff);// 배경
+
+
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -167,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                           //fontFamily: "Cafe24"
                         )),
                     decoration: BoxDecoration(
-                        color: Color(0xff8aadf8),
+                        color: mainColor,
                         border: Border.all(
                           width: 1,
                           color: Colors.white,
@@ -212,7 +218,7 @@ class _HomePageState extends State<HomePage> {
                           //fontFamily: "Cafe24"
                         )),
                     decoration: BoxDecoration(
-                        color: Color(0xff8aadf8),
+                        color: mainColor,
                         border: Border.all(
                           width: 1,
                           color: Colors.white,
@@ -244,7 +250,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white,
                           border: Border.all(
                             width: 1,
-                            color: Color(0xffc9d6fe),
+                            color: borderColor,
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                     ),
@@ -270,7 +276,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.white,
                           border: Border.all(
                             width: 1,
-                            color: Color(0xffc9d6fe),
+                            color: borderColor,
                           ),
                           borderRadius: BorderRadius.all(Radius.circular(10))),
                     )
@@ -283,7 +289,7 @@ class _HomePageState extends State<HomePage> {
 
                   //print(cBoard.date);
                   print(cronaData.date);
-                }, child: Text("이 버튼 안누르면 코로나 현황이 안보여 하ㅏ하하")),
+                }, child: Text("    ")),
                 // TextButton(
                 //     onPressed: () async {
                 //       var today = DateFormat("yyyyMMdd").format(DateTime.now());
@@ -346,7 +352,7 @@ class _HomePageState extends State<HomePage> {
                   style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xff6382f4),
+                    color: pointColor,
 
                     //fontFamily: "Cafe24"
                   )),
@@ -364,10 +370,10 @@ class _HomePageState extends State<HomePage> {
             width: MediaQuery.of(context).size.width * 0.85,
             padding: EdgeInsets.all(20),
             decoration: BoxDecoration(
-                color: Color(0xfffafbff),
+                color: backColor,
                 border: Border.all(
                   width: 1.2,
-                  color: Color(0xffc9d6fe),
+                  color: borderColor,
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(15))),
             child: Column(
@@ -401,7 +407,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 1,
                               fit: FlexFit.tight,
-                              child: Icon(CupertinoIcons.thermometer,color: Color(0xff6382f4),),
+                              child: Icon(CupertinoIcons.thermometer,color: pointColor,),
                             ),
                             Flexible(
                               flex: 1,
@@ -430,7 +436,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 1,
                               fit: FlexFit.tight,
-                              child: Icon(CupertinoIcons.location,color: Color(0xff6382f4)),
+                              child: Icon(CupertinoIcons.location,color: pointColor),
                             ),
                             Flexible(
                               flex: 1,
@@ -459,8 +465,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 1,
                               fit: FlexFit.tight,
-                              child: Icon(CupertinoIcons.time,color: Color(
-                                  0xff6382f4)),
+                              child: Icon(CupertinoIcons.time,color: pointColor),
                             ),
                             Flexible(
                               flex: 1,
@@ -500,7 +505,7 @@ class _HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
-                        primary: Color(0xff8aadf8),
+                        primary: mainColor,
                         onPrimary: Colors.white,
                         minimumSize: Size(300, 50),
                         //width, height

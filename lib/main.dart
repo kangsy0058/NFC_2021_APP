@@ -85,6 +85,8 @@ class UserController extends GetxController{
 }
 
 class Test extends StatelessWidget {
+
+
   @override
   Widget build(context) {
     // Get.put()을 사용하여 클래스를 인스턴스화하여 모든 "child'에서 사용가능하게 합니다.

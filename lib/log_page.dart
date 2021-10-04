@@ -56,6 +56,11 @@ class _LogPageState extends State<LogPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    Color mainC = Color(0xff6382f4);
+    Color subC = Color(0xff8aadf8);
+
+
     return Scaffold(
         backgroundColor: Colors.white,
         body: Column(
@@ -68,7 +73,7 @@ class _LogPageState extends State<LogPage> {
               title: Text(
                 "상세 기록",
                 style: TextStyle(
-                    color: Color(0xff6382f4),
+                    color: mainC,
                     fontWeight: FontWeight.w900,
                     fontFamily: 'Cafe24'),
               ),
@@ -89,7 +94,7 @@ class _LogPageState extends State<LogPage> {
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(50),
                       topRight: Radius.circular(50)),
-                  color: Color(0xff8aadf8)),
+                  color: subC),
               child: Stack(
                 children: [
                   Column(
