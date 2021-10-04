@@ -145,10 +145,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    Color mainColor = Color(0xffFF4830); // 22 찐
-    Color pointColor = Color(0xffF037A5); // 가장 찐
-    Color borderColor = Color(0xffF037A5);// 3 찐
-    Color backColor = Color(0xfffafbff);// 배경
+    Color mainColor = Color(0xffff7f55); // 22 찐
+    Color pointColor = Color(0xffff4c11); // 가장 찐
+    Color borderColor = Color(0xffffbfaa);// 3 찐
+    Color backColor = Color(0xffFFFCFA);// 배경
 
 
 

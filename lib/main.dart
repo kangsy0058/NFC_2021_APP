@@ -267,7 +267,7 @@ class _AppState extends State<App> {
           title: Text(
             App.title,
             style: TextStyle(
-                color: Color(0xff6382f4),
+                color: Color(0xffff7f55),
                 fontWeight: FontWeight.w900,
                 fontFamily: 'Cafe24'),
           ),
