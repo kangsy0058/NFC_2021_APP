@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:nfc_app21/dataInit_page.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 import './utils.dart';
@@ -141,7 +142,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
           const SizedBox(height: 8.0),
           Row(children: [
             Container(
-              padding: EdgeInsets.only(left: 20,top:20,bottom: 5),
+              padding: EdgeInsets.only(left: 20,top:20),
               child: Text(
                 '${new DateFormat.d('ko_KR').format(_focusedDay)}',
                 style: TextStyle(
@@ -151,7 +152,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             ),
           ]),
           Divider(
-            color: Color(0xffff4c11),
+            color: borderColor,
             height: 20,
             thickness: 1,
             indent: 15,
@@ -175,12 +176,6 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
                         color: Color(0xffFFFCFA),
                         border: Border.all( width: 2,color: Color(0xffffbfaa),),
                         borderRadius: BorderRadius.circular(18.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey,
-                            offset: Offset(0,2),
-                          ),
-                        ],
                       ),
                       child: ListTile(
                         onTap: () => print('${value[index]}'),

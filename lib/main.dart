@@ -12,6 +12,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
 import 'package:nfc_app21/setting_page.dart';
@@ -350,7 +351,7 @@ class _AppState extends State<App> {
                 Center(
                   child: OutlinedButton(
                     style: OutlinedButton.styleFrom(
-                        backgroundColor: Color(0xffff7f55),
+                        backgroundColor: mainColor,
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20))),
@@ -363,11 +364,11 @@ class _AppState extends State<App> {
                                 width: 100,
                                 height: 170,
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text("로그아웃 하시겠습니까?", style: TextStyle(
                                         fontSize: 20,
-                                        fontWeight: FontWeight.bold),),
+                                        fontWeight: FontWeight.w400),),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                       children: [
@@ -380,7 +381,7 @@ class _AppState extends State<App> {
                                                   borderRadius: BorderRadius.circular(10)),
                                               primary:  Colors.grey,
                                               onPrimary: Colors.white,
-                                              minimumSize: Size(120, 50),
+                                              minimumSize: Size(120, 40),
                                               //width, height
                                               alignment: Alignment.center,
                                               textStyle: const TextStyle(fontSize: 18)),
@@ -395,9 +396,9 @@ class _AppState extends State<App> {
                                           style: ElevatedButton.styleFrom(
                                               shape: RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.circular(10)),
-                                              primary:  Color(0xffff4c11),
+                                              primary:  mainColor,
                                               onPrimary: Colors.white,
-                                              minimumSize: Size(120, 50),
+                                              minimumSize: Size(120, 40),
                                               //width, height
                                               alignment: Alignment.center,
                                               textStyle: const TextStyle(fontSize: 18)),

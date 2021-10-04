@@ -24,7 +24,7 @@ Color mainColor = Color(0xffff7f55); // 22 찐
 Color pointColor = Color(0xffff4c11); // 가장 찐
 Color borderColor = Color(0xffffbfaa);// 3 찐
 Color backColor = Color(0xffFFFCFA);// 배경
-Color textColor = Color(0xff538797);
+Color textColor = Colors.black;
 
 
 class _DataInitPage extends State<DataInitPage> {
@@ -43,7 +43,7 @@ class _DataInitPage extends State<DataInitPage> {
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: backColor,
+          backgroundColor: Colors.white,
           elevation: 0,
           title: Text(
             "  ",
@@ -55,7 +55,7 @@ class _DataInitPage extends State<DataInitPage> {
           iconTheme: IconThemeData(color: Colors.grey)),
 
       body: Container(
-        color: backColor,
+        color: Colors.white,
 
         child: ListView(
           children: <Widget>[
@@ -127,7 +127,7 @@ class _DataInitPage extends State<DataInitPage> {
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                          borderSide: BorderSide(width: 1, color: mainColor),
+                          borderSide: BorderSide(width: 0, color: mainColor),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -182,7 +182,7 @@ class _DataInitPage extends State<DataInitPage> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: mainColor),
+                            borderSide: BorderSide(width: 0, color: mainColor),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -219,7 +219,7 @@ class _DataInitPage extends State<DataInitPage> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: mainColor),
+                            borderSide: BorderSide(width: 0, color: mainColor),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -267,7 +267,7 @@ class _DataInitPage extends State<DataInitPage> {
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                            borderSide: BorderSide(width: 1, color: mainColor),
+                            borderSide: BorderSide(width: 0, color: mainColor),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -309,8 +309,8 @@ class _DataInitPage extends State<DataInitPage> {
                             spreadRadius: 1.0,
                             // has the effect of extending the shadow
                             offset: Offset(
-                              10, // horizontal, move right 10
-                              10, // vertical, move down 10
+                              2, // horizontal, move right 10
+                              2, // vertical, move down 10
                             ),
                           ),
                         ],
