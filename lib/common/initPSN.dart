@@ -51,8 +51,10 @@ Dialog initPSN(h, w,TextEditingController textCon) {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("⚠ NFC태그에 실패하는 경우",style: TextStyle(color: Colors.grey),),
+
                         ElevatedButton(
                           onPressed: () async {
+                            print("gkgkk");
                             barcodeScanRes =
                             await FlutterBarcodeScanner.scanBarcode(
                                 "#8aadf8", "취소", false, ScanMode.DEFAULT);
@@ -74,7 +76,7 @@ Dialog initPSN(h, w,TextEditingController textCon) {
                             padding:  EdgeInsets.fromLTRB(h*0.005, 0, h*0.005,0),
                             child: Text(
                               " QR로 등록 ",
-                              style: TextStyle(fontSize: w * 0.015),
+                              style: TextStyle(fontSize: w * 0.02),
                             ),
                           ),
                         ),

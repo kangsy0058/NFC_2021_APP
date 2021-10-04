@@ -12,6 +12,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:nfc_app21/common/initPSN.dart';
+import 'package:nfc_app21/common/initWSN.dart';
 import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
@@ -49,8 +51,8 @@ class Myapp extends StatelessWidget {
 }
 
 class UserController extends GetxController{
-  var WSN = "입력X".obs;
-  var PSN= "입력X".obs;
+  var WSN = "WSN1234".obs;
+  var PSN= "PSN1234".obs;
   var isUser = false.obs;
 
   // var cnt = 0.obs;
@@ -127,74 +129,30 @@ Container buildAccountOption(
       height: MediaQuery.of(context).size.height * 0.05,
       child: OutlinedButton(
         onPressed: () {
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Center(
-                    child: Text(title + " 수정"),
-                  ),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Color(0xff8aadf8),
-                            ),
-                            borderRadius: BorderRadius.all(Radius.circular(4))),
-                        padding: EdgeInsets.fromLTRB(10, 7, 7, 7),
-                        margin: EdgeInsets.fromLTRB(10, 10, 7, 10),
-                        width: MediaQuery.of(context).size.width * 0.7,
-                        child: Row(
-                          children: [
-                            Flexible(
-                              child: TextField(
-                                decoration: new InputDecoration.collapsed(
-                                    hintText: "$str"),
-                              ),
-                            ),
-                            Container(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 4.0),
-                              child: IconButton(
-                                icon: Icon(icn),
-                                //onPressed: () => 사진 가져오깅~,
-                              ),
-                            )
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Center(
-                        child: OutlinedButton(
+          if(title=="개인안심번호"){
+            Get.dialog(
+              initWSN(MediaQuery
+                  .of(context)
+                  .size
+                  .width,MediaQuery
+                  .of(context)
+                  .size
+                  .height,null),
+            );
 
-                          style: OutlinedButton.styleFrom(
-                              backgroundColor: Color(0xff8aadf8),
-                              //padding: const EdgeInsets.symmetric(horizontal: 30),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          //onPressed: ,
-                          child: Text(
-                            "수정 완료",
-                            style: TextStyle(
-                                fontSize: 14,
-                                letterSpacing: 2.0,
-                                color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    )
-                  ],
-                );
-              });
+          }else{
+            Get.dialog(
+              initPSN(MediaQuery
+                  .of(context)
+                  .size
+                  .width,MediaQuery
+                  .of(context)
+                  .size
+                  .height,null),
+            );
+
+          }
+
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
