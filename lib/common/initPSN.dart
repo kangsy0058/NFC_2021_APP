@@ -32,68 +32,6 @@ Dialog initPSN(h, w,TextEditingController textCon) {
              alignment: Alignment.topCenter,
               child: Lottie.asset("assets/lottie/nfc.json")
           ),
-          // Padding(
-          //   padding: EdgeInsets.fromLTRB(0, h*0.04, 0, 0),
-          //   child:
-          //   Row(
-          //     mainAxisAlignment: MainAxisAlignment
-          //         .spaceEvenly,
-          //     children: [
-                // ElevatedButton(
-                //     onPressed: () {
-                //       FlutterNfcReader.read().then((value){
-                //         textCon.text = value.id;
-                //         Get.back();
-                //       });
-                //     },
-                //     style: ElevatedButton.styleFrom(
-                //       shape:  RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(20)),
-                //       primary: Colors.orange,
-                //       onPrimary: Colors.white,
-                //       alignment: Alignment.center,
-                //     ),
-                //     child: Padding(
-                //       padding:  EdgeInsets.all(w*0.011),
-                //       child: Text("NFC로 등록", style: TextStyle(fontSize: w * 0.02),),
-                //     )),
-                // ElevatedButton(
-                //   onPressed: () async {
-                //     barcodeScanRes =
-                //     await FlutterBarcodeScanner.scanBarcode(
-                //         "#8aadf8", "취소", false, ScanMode.DEFAULT);
-                //     print("WSN출력 부분 @@@@@@@@"+barcodeScanRes);
-                //     if(barcodeScanRes!=""){
-                //       textCon.text = barcodeScanRes;
-                //
-                //       Get.back();
-                //     }
-                //   },
-                //   style: ElevatedButton.styleFrom(
-                //     shape:  RoundedRectangleBorder(
-                //         borderRadius: BorderRadius.circular(20)),
-                //     primary: Colors.black12,
-                //     onPrimary: Colors.white,
-                //     alignment: Alignment.center,
-                //   ),
-                //   child: Padding(
-                //     padding: EdgeInsets.all(w*0.011),
-                //     child: Text(
-                //       " QR로 등록 ", style: TextStyle(fontSize: w * 0.02),),
-                //   ),
-                // ),
-          //     ],
-          //   ),
-          // ),
-          // Center(
-          //   heightFactor: h*0.001,
-          //   child: Text("NFC로 등록 안내",
-          //     style: TextStyle(
-          //         fontSize: w * 0.02,
-          //         fontWeight: FontWeight.w800
-          //     ),
-          //   ),
-          // ),
            Center(
               heightFactor: h*0.001 ,
               widthFactor: w*0.02,
