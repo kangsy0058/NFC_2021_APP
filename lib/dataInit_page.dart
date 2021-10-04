@@ -24,6 +24,9 @@ Color mainColor = Color(0xffff7f55); // 22 찐
 Color pointColor = Color(0xffff4c11); // 가장 찐
 Color borderColor = Color(0xffffbfaa);// 3 찐
 Color backColor = Color(0xffFFFCFA);// 배경
+Color textColor = Color(0xff538797);
+
+
 class _DataInitPage extends State<DataInitPage> {
   bool _reading = false;
   StreamSubscription<NDEFMessage>? _stream;
@@ -32,9 +35,6 @@ class _DataInitPage extends State<DataInitPage> {
 
   var visable = [false, false, false, false];
   String barcodeScanRes = "";
-
-
-
 
 
   @override
@@ -46,7 +46,7 @@ class _DataInitPage extends State<DataInitPage> {
           backgroundColor: backColor,
           elevation: 0,
           title: Text(
-            "온기",
+            "  ",
             style: TextStyle(
                 color: pointColor,
                 fontWeight: FontWeight.w900,
@@ -55,57 +55,39 @@ class _DataInitPage extends State<DataInitPage> {
           iconTheme: IconThemeData(color: Colors.grey)),
 
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [backColor, borderColor]),
-        ),
+        color: backColor,
+
         child: ListView(
           children: <Widget>[
             Column(
               children: <Widget>[
                 Row(children: <Widget>[
                   Padding(
-                    padding: const EdgeInsets.only(top: 0, left: 30),
+                    padding: const EdgeInsets.only(top: 0, left: 40),
                     child: RotatedBox(
                         quarterTurns: 0,
                         child: Text(
-                          '온\n기\n',
+                          '온\n도\n기\n록',
                           style: TextStyle(
-                            color: Colors.black,
+                            color: mainColor,
                             fontSize: 38,
-                            fontWeight: FontWeight.w200,
+                            fontWeight: FontWeight.bold,
+                              fontFamily: 'Cafe24'
                           ),
                         )),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 30.0, left: 10.0),
+                    padding: const EdgeInsets.only(top: 00.0, left: 10.0),
                     child: Container(
                       //color: Colors.green,
                       height: 200,
                       width: 300,
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            height: 60,
-                          ),
-                          Center(
-                            child: Text(
-                              '디바이스와 개인안심번호 등록',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: Image.asset("imgs/logo.png",fit: BoxFit.fitHeight,),
                     ),
                   ),
                 ]),
                 Padding(
-                  padding: const EdgeInsets.only(top: 50, left: 50, right: 50),
+                  padding: const EdgeInsets.only(top: 30, left: 40, right: 40),
                   child: Container(
                     height: 60,
                     width: MediaQuery
@@ -130,14 +112,25 @@ class _DataInitPage extends State<DataInitPage> {
                         });
                       },
                       style: TextStyle(
-                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        color: textColor,
                       ),
                       decoration: InputDecoration(
-                        border: InputBorder.none,
-                        fillColor: Colors.lightBlueAccent,
                         labelText: 'STEP1. 디바이스 등록',
                         labelStyle: TextStyle(
-                          color: Colors.black,
+                            color: mainColor,
+                            fontWeight: FontWeight.bold
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(width: 1, color: mainColor),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          borderSide: BorderSide(width: 1, color: mainColor),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                       ),
                     ),
@@ -147,7 +140,7 @@ class _DataInitPage extends State<DataInitPage> {
                   visible: visable[0],
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 50, left: 50, right: 50),
+                        top: 50, left: 40, right: 40),
                     child: Container(
                       height: 60,
                       width: MediaQuery
@@ -173,16 +166,29 @@ class _DataInitPage extends State<DataInitPage> {
                           });
                         },
                         style: TextStyle(
-                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+
+                          color: textColor,
                         ),
                         decoration: InputDecoration(
-                          border: InputBorder.none,
-                          fillColor: Colors.lightBlueAccent,
                           labelText: 'STEP2. 개인 안심번호 등록',
                           labelStyle: TextStyle(
-                            color: Colors.black,
+                              color: mainColor,
+                              fontWeight: FontWeight.bold
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: mainColor),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: mainColor),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
                           ),
                         ),
+
                       ),
                     ),
                   ),
@@ -191,7 +197,7 @@ class _DataInitPage extends State<DataInitPage> {
                   visible: visable[1],
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 50, left: 50, right: 50),
+                        top: 50, left: 40, right: 40),
                     child: Container(
                       height: 60,
                       width: MediaQuery
@@ -199,23 +205,39 @@ class _DataInitPage extends State<DataInitPage> {
                           .size
                           .width,
                       child: TextField(
+                        cursorColor: mainColor,
+                        decoration: InputDecoration(
+
+                          labelText: 'STEP3. 이름',
+                          labelStyle: TextStyle(
+                              color: mainColor,
+                              fontWeight: FontWeight.bold
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: mainColor),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: mainColor),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                        ),
+
+                        // readOnly: true,
                         onTap: () {
                           setState(() {
                             visable[2] = true;
                           });
                         },
                         style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          fillColor: Colors.lightBlueAccent,
-                          labelText: 'STEP3. 이름',
-                          labelStyle: TextStyle(
-                            color: Colors.black,
-                          ),
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
                         ),
                       ),
+
                     ),
                   ),
                 ),
@@ -223,7 +245,7 @@ class _DataInitPage extends State<DataInitPage> {
                   visible: visable[2],
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 50, left: 50, right: 50),
+                        top: 50, left: 40, right: 40),
                     child: Container(
                       height: 60,
                       width: MediaQuery
@@ -231,6 +253,27 @@ class _DataInitPage extends State<DataInitPage> {
                           .size
                           .width,
                       child: TextField(
+                        cursorColor: mainColor,
+
+                        decoration: InputDecoration(
+                          labelText: 'STEP4. 이메일',
+                          labelStyle: TextStyle(
+                              color: mainColor,
+                              fontWeight: FontWeight.bold
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: mainColor),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                            borderSide: BorderSide(width: 1, color: mainColor),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                          ),
+                        ),
+                        keyboardType: TextInputType.emailAddress,
                         // readOnly: true,
                         onTap: () {
                           setState(() {
@@ -238,15 +281,8 @@ class _DataInitPage extends State<DataInitPage> {
                           });
                         },
                         style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          fillColor: Colors.lightBlueAccent,
-                          labelText: 'STEP4. 이메일',
-                          labelStyle: TextStyle(
-                            color: Colors.black,
-                          ),
+                          fontWeight: FontWeight.bold,
+                          color: textColor,
                         ),
                       ),
                     ),
@@ -256,7 +292,7 @@ class _DataInitPage extends State<DataInitPage> {
                   visible: visable[3],
                   child: Padding(
                     padding: const EdgeInsets.only(
-                        top: 40, right: 50, left: 50),
+                        top: 40, right: 40, left: 40),
                     child: Container(
                       alignment: Alignment.bottomRight,
                       height: 50,
@@ -267,18 +303,18 @@ class _DataInitPage extends State<DataInitPage> {
                       decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.blue,
+                            color: borderColor,
                             blurRadius: 10.0,
                             // has the effect of softening the shadow
                             spreadRadius: 1.0,
                             // has the effect of extending the shadow
                             offset: Offset(
-                              5.0, // horizontal, move right 10
-                              5.0, // vertical, move down 10
+                              10, // horizontal, move right 10
+                              10, // vertical, move down 10
                             ),
                           ),
                         ],
-                        color: Colors.white,
+                        color: mainColor,
                         borderRadius: BorderRadius.circular(30),
                       ),
                       child: TextButton(
@@ -297,14 +333,14 @@ class _DataInitPage extends State<DataInitPage> {
                             Text(
                               '시작',
                               style: TextStyle(
-                                color: Colors.black,
+                                color: Colors.white,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             Icon(
                               Icons.arrow_forward,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ],
                         ),
