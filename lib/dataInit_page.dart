@@ -10,6 +10,8 @@ import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:nfc_app21/common/initPSN.dart';
+import 'package:nfc_app21/common/initWSN.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/main.dart';
 import 'package:nfc_in_flutter/nfc_in_flutter.dart';
@@ -32,165 +34,8 @@ class _DataInitPage extends State<DataInitPage> {
   String barcodeScanRes = "";
 
 
-  Dialog initWSN(h, w,TextEditingController textCon) {
-
-    ImagePicker picker = ImagePicker();
-    XFile? image;
-    String img64;
-
-    return Dialog(
-      child: Container(
-        height: h * 1.1,
-        width: w,
-        child: Column(
-          children: [
-            // image == null ? Text("d") : Image.file(File(image.path)),
-
-            OutlinedButton(onPressed: () async {
-              image = await picker.pickImage(source: ImageSource.gallery,);
-              print("이미지 경로임 :\n" + image!.path);
-              final bytes = File(image!.path).readAsBytesSync();
-
-              img64 = base64Encode(bytes);//이미지 바이트화
-              print("여기부터\n" + img64 + "여기까지\n");
-            }, child: Text("스샷 선택")),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: TextField(
-                controller: textCon,
-                decoration: InputDecoration(
-                  fillColor: Colors.lightBlueAccent,
-                  labelText: '개인안심번호',
-                  labelStyle: TextStyle(
-                    color: Colors.black,
-                  ),
-                ),
-
-              ),
-            ),
-            OutlinedButton(onPressed: () {
-              super.setState(() {
-                print(textCon.text);
-                textCon.text = textCon.text;
 
 
-              });
-              Get.back();
-
-
-            }, child: Text("완료")),
-
-
-          ],
-        ),
-      ),
-    );
-  }
-
-
-  Dialog initPSN(h, w,TextEditingController textCon) {
-
-    return Dialog(
-      child:
-      Container(
-        height: h * 1.1,
-        width: w,
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, h*0.1, 0, 0),
-              child: Center(
-                child: Text("STEP1. 디바이스 등록",style: TextStyle(color: mainColor, fontSize: w*0.03, fontWeight: FontWeight.w500 ),),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(0, h*0.04, 0, 0),
-              child:
-              Row(
-                mainAxisAlignment: MainAxisAlignment
-                    .spaceEvenly,
-                children: [
-                  ElevatedButton(
-                      onPressed: () {
-                        FlutterNfcReader.read().then((value){
-                          textCon.text = value.id;
-                          Get.back();
-                        });
-                        super.setState(() {
-
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape:  RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                          primary: Colors.orange,
-                          onPrimary: Colors.white,
-                          alignment: Alignment.center,
-                      ),
-                      child: Padding(
-                    padding:  EdgeInsets.all(w*0.011),
-                    child: Text("NFC로 등록", style: TextStyle(fontSize: w * 0.02),),
-                  )),
-                  ElevatedButton(
-                    onPressed: () async {
-                      barcodeScanRes =
-                      await FlutterBarcodeScanner.scanBarcode(
-                          "#8aadf8", "취소", false, ScanMode.DEFAULT);
-                      print("WSN출력 부분 @@@@@@@@"+barcodeScanRes);
-                      if(barcodeScanRes!=""){
-                        textCon.text = barcodeScanRes;
-                        super.setState(() {
-
-                        });
-                        Get.back();
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape:  RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      primary: Colors.black12,
-                      onPrimary: Colors.white,
-                      alignment: Alignment.center,
-                    ),
-                    child: Padding(
-                      padding: EdgeInsets.all(w*0.011),
-                      child: Text(
-                        " QR로 등록 ", style: TextStyle(fontSize: w * 0.02),),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              heightFactor: h*0.01,
-              child: Text("NFC로 등록 안내",
-                style: TextStyle(
-                    fontSize: w * 0.02,
-                    fontWeight: FontWeight.w800
-                ),
-              ),
-            ),
-            Center(
-                heightFactor: h*0.001 ,
-              widthFactor: w*0.02,
-              child: Column(
-                children: [
-                  Padding(
-                    padding:  EdgeInsets.fromLTRB(0, h*0.1, 0, h*0.01),
-                    child: Text("1. 스마트폰의 NFC이 켜져있는지 확인해주세요."),
-                  ),
-                  Padding(
-                    padding:  EdgeInsets.fromLTRB(0, h*0.1, 0, h*0.01),
-                    child: Text("2. 디바이스를 스마트폰 뒷면에 태그해주세요."),
-                  ),
-                ],
-              )
-            )
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
