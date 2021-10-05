@@ -105,10 +105,14 @@ class _DataInitPage extends State<DataInitPage> {
                                 .width, MediaQuery
                                 .of(context)
                                 .size
-                                .height,textCon[0])
+                                .height,textCon[0]),
                         );
                         setState(() {
                           visable[0] = true;
+                        });
+                        FlutterNfcReader.read().then((value) {
+                          textCon[0].text = value.id;
+                          Get.back();
                         });
                       },
                       style: TextStyle(
