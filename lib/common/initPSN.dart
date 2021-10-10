@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:nfc_app21/dataInit_page.dart';
@@ -21,8 +20,8 @@ Dialog initPSN(h, w,TextEditingController textCon) {
               child: Text("STEP1. 디바이스 등록",
                 style: TextStyle(
                     color: mainColor,
-                    fontSize: w*0.03,
-                    fontWeight: FontWeight.w400
+                    fontSize: w*0.027,
+                    fontWeight: FontWeight.bold
                 ),
               ),
             ),
@@ -36,14 +35,15 @@ Dialog initPSN(h, w,TextEditingController textCon) {
               heightFactor: h*0.001 ,
               widthFactor: w*0.02,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding:  EdgeInsets.fromLTRB(0, h*0.03, 0, 0),
-                    child: Text("1. 스마트폰의 NFC가 켜져있는지 확인해주세요."),
+                    padding:  EdgeInsets.fromLTRB(20, h*0.03, 0, 0),
+                    child: Text("1. 스마트폰의 NFC가 켜져있는지 확인하기."),
                   ),
                   Padding(
-                    padding:  EdgeInsets.fromLTRB(0, h*0.05, 0, h*0.01),
-                    child: Text("2. 디바이스를 스마트폰 뒷면에 태그해주세요."),
+                    padding:  EdgeInsets.fromLTRB(20, h*0.05, 0, h*0.01),
+                    child: Text("2. 디바이스를 스마트폰 뒷면에 태그하기."),
                   ),
                   Padding(
                     padding:  EdgeInsets.fromLTRB(0, h*0.04, 0, 0),

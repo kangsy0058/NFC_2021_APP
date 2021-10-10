@@ -25,8 +25,8 @@ final _kEventSource = Map.fromIterable(List.generate(40, (index) => index),
         item % 4 + 1, (index) => Event('2공학관 $item | ${index + 1}')))
   ..addAll({
     kToday: [
-      Event('14:00\t    제2공학관                                    \t36.5'),
-      Event('15:45\t    강석규 교육관                             \t36.5'),
+      Event('16:16\t    제2공학관                                    \t36.2'),
+      //Event('15:45\t    강석규 교육관                             \t36.5'),
     ],
   });
 
