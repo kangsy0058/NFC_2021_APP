@@ -13,6 +13,8 @@ import 'package:nfc_app21/common/initWSN.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/main.dart';
 import 'package:nfc_manager/nfc_manager.dart';
+import 'package:nfc_manager/platform_tags.dart';
+import 'package:provider/provider.dart';
 
 class DataInitPage  extends StatefulWidget {
   @override
@@ -24,14 +26,44 @@ Color borderColor = Color(0xffffbfaa);// 3 찐
 Color backColor = Color(0xffFFFCFA);// 배경
 Color textColor = Colors.black;
 
+class TagReadModel with ChangeNotifier {
+  NfcTag? tag;
+
+  Map<String, dynamic>? additionalData;
+
+  Future<String?> handleTag(NfcTag tag) async {
+    this.tag = tag;
+    additionalData = {};
+
+    Object? tech;
+
+    // todo: more additional data
+    if (Platform.isIOS) {
+      tech = FeliCa.from(tag);
+      if (tech is FeliCa) {
+        final polling = await tech.polling(
+          systemCode: tech.currentSystemCode,
+          requestCode: FeliCaPollingRequestCode.noRequest,
+          timeSlot: FeliCaPollingTimeSlot.max1,
+        );
+        additionalData!['manufacturerParameter'] = polling.manufacturerParameter;
+      }
+    }
+
+    notifyListeners();
+    return '[Tag - Read] is completed.';
+  }
+}
 
 class _DataInitPage extends State<DataInitPage> {
-  bool _reading = false;
 
   final textCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
 
   var visable = [false, false, false, false];
   String barcodeScanRes = "";
+
+
+
 
 
   @override
@@ -107,18 +139,40 @@ class _DataInitPage extends State<DataInitPage> {
                         setState(() {
                           visable[0] = true;
                         });
-                        NfcManager.instance.startSession(
-                          onDiscovered: (NfcTag tag) async {
-                            String str="0x";
-                            List data = tag.data["nfca"]["identifier"];
-                            var newData = data.map((e) => str+=e.toRadixString(16).padLeft(2,'0'));
-                            print(newData);
-                            textCon[0].text = str;
-                            NfcManager.instance.stopSession();
-                            Get.back();
+                        if (Platform.isAndroid){
+                          NfcManager.instance.startSession(
+                            onDiscovered: (NfcTag tag) async {
+                              String str="0x";
+                              List data = tag.data["nfca"]["identifier"];
+                              var newData = data.map((e) => str+=e.toRadixString(16).padLeft(2,'0'));
+                              print(newData);
+                              textCon[0].text = str;
+                              NfcManager.instance.stopSession();
+                              Get.back();
 
-                          },
-                        );
+                            },
+                          );
+
+                        }
+                        if (Platform.isIOS){
+                          NfcManager.instance.startSession(
+                            onDiscovered: (tag) async {
+                              try {
+                                final result = await Provider.of<TagReadModel>(context, listen: false).handleTag(tag);
+                                if (result == null) return;
+                                textCon[0].text = result;
+                                await NfcManager.instance.stopSession(alertMessage: result);
+                              } catch (e) {
+                                await NfcManager.instance.stopSession(errorMessage: '$e');
+                              }
+                            },
+                          );
+
+                        }
+
+
+
+
 
                       },
                       style: TextStyle(
