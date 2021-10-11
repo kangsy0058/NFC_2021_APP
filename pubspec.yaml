@@ -36,11 +36,9 @@ dependencies:
   intl: ^0.17.0
   xml2json: ^5.3.1
   flutter_barcode_scanner: ^2.0.0
-  nfc_in_flutter: ^2.0.5
   image_picker: ^0.8.3+2
-  animated_text_kit: ^4.2.1
   lottie: ^1.1.0
-  flutter_nfc_reader: ^0.1.0
+  nfc_manager: ^3.1.0
 
 
 

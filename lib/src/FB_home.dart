@@ -9,7 +9,6 @@ import 'package:nfc_app21/data/user.dart';
 import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/main.dart';
 import 'package:nfc_app21/src/login.dart';
-import 'package:nfc_in_flutter/nfc_in_flutter.dart';
 import 'package:nfc_app21/basics_example.dart';
 class fb_home extends StatefulWidget {
   @override
@@ -18,18 +17,10 @@ class fb_home extends StatefulWidget {
 
 class _fb_homeState extends State<fb_home> {
 
-  bool _supportsNFC = false;
-  bool _reading = false;
-  StreamSubscription<NDEFMessage>? _stream;
 
   @override
   void initState() {
-    NFC.isNDEFSupported
-        .then((bool isSupported) {
-      setState(() {
-        _supportsNFC = isSupported;
-      });
-    });
+
   }
   final UserController user = Get.put(UserController());
 

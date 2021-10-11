@@ -42,6 +42,7 @@ class Myapp extends StatelessWidget {
       statusBarColor: Colors.transparent, // 투명색
     ));
     return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
       title: "firetest",
       home: fbApp(),
       // home: Test(),
@@ -51,8 +52,8 @@ class Myapp extends StatelessWidget {
 }
 
 class UserController extends GetxController{
-  var WSN = "WSN1234".obs;
-  var PSN= "PSN1234".obs;
+  var PSN = "가12나34".obs;
+  var WSN= "4a71e52076180".obs;
   var isUser = false.obs;
 
   // var cnt = 0.obs;
@@ -260,7 +261,7 @@ class _AppState extends State<App> {
                     Text("개인 안심번호"),
                     buildAccountOption(context, "개인안심번호",user.WSN,
                         CupertinoIcons.photo_on_rectangle),
-                    Text("디바이스 ID"),
+                    Text("웨어러블"),
                     buildAccountOption(context, "디바이스 ",user.PSN,
                         CupertinoIcons.pencil_ellipsis_rectangle),
                     Text("알림"),

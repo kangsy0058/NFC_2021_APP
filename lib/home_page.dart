@@ -70,7 +70,9 @@ class _HomePageState extends State<HomePage> {
                             size: 12,
                           ),
                           Text(
-                            cronaData.decide.toString(),
+                            // cronaData.decide.toString()
+                            "2,176"
+                            ,
                             style:
                             TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                           )
@@ -90,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "162,753",
+                              "327,976",
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )
@@ -111,7 +113,8 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("검사 중 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
-                    Text(cronaData.exam.toString(),
+                    // Text(cronaData.exam.toString(),
+                    Text("6,884",
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -124,7 +127,8 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Text("격리해제 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
-                    Text(cronaData.exam.toString(),
+                    // Text(cronaData.exam.toString(),
+                    Text("3,269",
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -264,12 +268,12 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text("디바이스 ID",
+                          Text("디바이스",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.grey)),
                           Text("${user.WSN}",
                               style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.bold))
+                                  fontSize: 12, fontWeight: FontWeight.bold))
                         ],
                       ),
                       decoration: BoxDecoration(
@@ -384,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                   fit: FlexFit.tight,
                   child: Row(
                     children: [
-                      Text("2021년 07월 8일",
+                      Text("2021년 10월 8일",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -420,7 +424,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
-                              child: Text("36.2" + " ℃",
+                              child: Text("36.2" + "℃",// ℃
                                   style: TextStyle(
                                       fontSize: 14, )
                               ),
@@ -449,7 +453,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
-                              child: Text("제 2공학관",
+                              child: Text("제2공학관",//강석규교육관
                                   style: TextStyle(
                                       fontSize: 14,)
                               ),
@@ -478,7 +482,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
-                              child: Text("오후" + " " + "4:57",
+                              child: Text("오후" + " " + "4:16",//
                                   style: TextStyle(
                                       fontSize: 14, )
                               ),

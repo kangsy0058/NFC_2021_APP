@@ -2,11 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
@@ -14,7 +12,7 @@ import 'package:nfc_app21/common/initPSN.dart';
 import 'package:nfc_app21/common/initWSN.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/main.dart';
-import 'package:nfc_in_flutter/nfc_in_flutter.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 
 class DataInitPage  extends StatefulWidget {
   @override
@@ -29,7 +27,6 @@ Color textColor = Colors.black;
 
 class _DataInitPage extends State<DataInitPage> {
   bool _reading = false;
-  StreamSubscription<NDEFMessage>? _stream;
 
   final textCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
 
@@ -110,10 +107,19 @@ class _DataInitPage extends State<DataInitPage> {
                         setState(() {
                           visable[0] = true;
                         });
-                        FlutterNfcReader.read().then((value) {
-                          textCon[0].text = value.id;
-                          Get.back();
-                        });
+                        NfcManager.instance.startSession(
+                          onDiscovered: (NfcTag tag) async {
+                            String str="0x";
+                            List data = tag.data["nfca"]["identifier"];
+                            var newData = data.map((e) => str+=e.toRadixString(16).padLeft(2,'0'));
+                            print(newData);
+                            textCon[0].text = str;
+                            NfcManager.instance.stopSession();
+                            Get.back();
+
+                          },
+                        );
+
                       },
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
