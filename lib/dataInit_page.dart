@@ -156,24 +156,19 @@ class _DataInitPage extends State<DataInitPage> {
                         }
                         if (Platform.isIOS){
                           NfcManager.instance.startSession(
-                            onDiscovered: (tag) async {
-                              try {
-                                final result = await Provider.of<TagReadModel>(context, listen: false).handleTag(tag);
-                                if (result == null) return;
-                                textCon[0].text = result;
-                                await NfcManager.instance.stopSession(alertMessage: result);
-                              } catch (e) {
-                                await NfcManager.instance.stopSession(errorMessage: '$e');
-                              }
+                            alertMessage: "웨어러블 디바이스에 인식해주세요.",
+                            onDiscovered: (NfcTag tag) async {
+                              String str="0x";
+                              List data = tag.data["mifare"]["identifier"];
+                              var newData = data.map((e) => str+=e.toRadixString(16).padLeft(2,'0'));
+                              print(newData);
+                              textCon[0].text = str;
+                              NfcManager.instance.stopSession();
+                              Get.back();
+
                             },
                           );
-
                         }
-
-
-
-
-
                       },
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
