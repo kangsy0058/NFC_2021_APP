@@ -2,6 +2,7 @@
     package="com.nfcai.nfc_app21">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.NFC" />
+    <uses-permission android:name="android.permission.CAMERA" />
    <application
         android:label="온기"
         android:icon="@mipmap/ic_launcher"

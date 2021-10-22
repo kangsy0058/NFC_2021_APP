@@ -15,6 +15,8 @@ import 'package:nfc_app21/main.dart';
 import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+
 
 class DataInitPage  extends StatefulWidget {
   @override
@@ -59,11 +61,44 @@ class _DataInitPage extends State<DataInitPage> {
 
   final textCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
 
+
   var visable = [false, false, false, false];
   String barcodeScanRes = "";
+  Future<bool> isUser(String uid)  async{
+    String _baseUrl = "210.119.104.206:8080";
+    String _getData = "/v1/common/user/userinfo";
+
+    final queryParameters = {
+      'UUID': uid,
+    };
+    var url = Uri.http (
+        _baseUrl,
+        _getData,
+        queryParameters);
+    var response = await http.get(url);
+    var test = jsonDecode(response.body);
+    print(response.body);
+
+    if(test["User_log"]["UUID"]=="") {
+      return Future(() => false);
+    }else{
+      return Future(() => true);
+
+    }
+
+  }
 
 
 
+  @override
+  // ignore: must_call_super
+  void initState() {
+
+
+     isUser("user13");
+
+
+  }
 
 
   @override

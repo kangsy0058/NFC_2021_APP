@@ -1,15 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:get/get.dart';
-import 'package:nfc_app21/data/user.dart';
 import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/main.dart';
 import 'package:nfc_app21/src/login.dart';
-import 'package:nfc_app21/basics_example.dart';
+import 'package:http/http.dart' as http;
 class fb_home extends StatefulWidget {
   @override
   _fb_homeState createState() => _fb_homeState();
@@ -17,97 +15,73 @@ class fb_home extends StatefulWidget {
 
 class _fb_homeState extends State<fb_home> {
 
+  Future<bool> isUser(String uid)  async{
+    String _baseUrl = "210.119.104.206:8080";
+    String _getData = "/v1/common/user/userinfo";
+
+    final queryParameters = {
+      'UUID': uid,
+    };
+    var url = Uri.http (
+        _baseUrl,
+        _getData,
+        queryParameters);
+    var response = await http.get(url);
+    var test = jsonDecode(response.body);
+    print(response.body);
+
+    if(test["User_log"]["UUID"]=="") {
+      return Future(() => false);
+    }else{
+      return Future(() => true);
+
+    }
+
+  }
+
+
+
+
 
   @override
   void initState() {
+
 
   }
   final UserController user = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
-    String _scanBarcode = 'Unknown';
-    // if (!_supportsNFC) {
-    //   return ElevatedButton(
-    //     child: const Text("You device does not support NFC"),
-    //     onPressed: null,
-    //   );
-    // }
+
+
 
 
     return Scaffold(
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),// stream 이라 stramBuilder를 통해 받기
-        builder: (BuildContext context,AsyncSnapshot snapshot){
+        builder: (BuildContext context,AsyncSnapshot snapshot) {
           if(!snapshot.hasData){
             return LoginWidget();
           }
           else{
-              // return
-              //   Center(
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         Text("${snapshot.data.email} "),
-              //         Text("WSN : ${nfcUser.WSN}  PSN : ${nfcUser.PSN}"),
-              //         TextButton(onPressed:()async {
-              //           try{
-              //             print(await FirebaseAuth.instance.currentUser!.getIdToken());
-              //           }catch(err){
-              //             print(err);
-              //           }
-              //         }, child: Text("token 확인")),
-              //         TextButton(onPressed: ()async{
-              //           _scanBarcode = await FlutterBarcodeScanner.scanBarcode("#ff6666", "취소", false, ScanMode.DEFAULT);
-              //           nfcUser.WSN = _scanBarcode;
-              //           setState(() {
-              //
-              //           });
-              //
-              //
-              //         }, child: Text("WSN QR")),
-              //
-              //       ElevatedButton(
-              //           child: Text(_reading ? "WSN NFC Stop" : "WSN NFC Start"),
-              //           onPressed: () {
-              //             if (_reading) {
-              //               _stream?.cancel();
-              //               setState(() {
-              //                 _reading = false;
-              //               });
-              //             } else {
-              //               setState(() {
-              //                 _reading = true;
-              //                 // Start reading using NFC.readNDEF()
-              //                 _stream = NFC.readNDEF(
-              //                   once: true,
-              //                   throwOnUserCancel: false,
-              //                 ).listen((NDEFMessage message) {
-              //                   print("read NDEF message: ${message.payload}");
-              //                 }, onError: (e) {
-              //                   // Check error handling guide below
-              //                 });
-              //               });
-              //             }
-              //           }
-              //       ),
-              //
-              //
-              //         TextButton(onPressed:FirebaseAuth.instance.signOut, child: Text("logOut")),
-              //       ],
-              //     ),
-              //   );
-              //  return App();
 
-            if(user.isUser.value){
-              return App();
-            }else{
-              return DataInitPage();
-            }
 
+            // if(test){
+            //   print("dkdkd");
+            //
+            // }else{
+            //   print("이건 뭐야");
+            // }
+            //
+            //
+            //
+            //   return DataInitPage();
+
+            return App();
 
           }
-        }),
+        }
+        ),
     );
   }
 

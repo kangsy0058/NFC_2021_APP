@@ -1,12 +1,15 @@
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_signin_button/flutter_signin_button.dart';
+import 'dart:convert' as convert;
 
 
 class LoginWidget extends StatelessWidget {
@@ -47,6 +50,56 @@ class LoginWidget extends StatelessWidget {
     }
   }
 
+  Future<bool> isUser(String uid) async {
+    String _baseUrl = "210.119.104.206:8080";
+    String _getData = "/v1/common/user/userinfo";
+    final queryParameters = {
+      'UUID': uid,
+    };
+    var url = Uri.http(
+        _baseUrl,
+        _getData,
+        queryParameters);
+    var response = await http.get(url);
+    // print(response.body);
+
+    var test = jsonDecode(response.body);
+
+    // print(test["User_log"]["UUID"]=="");
+
+    if(test["User_log"]["UUID"]=="") {
+      return Future(() => false);
+    }else{
+      return Future(() => true);
+    }
+  }
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
+  }
+
+  //IOS 13 이상
+  Future<UserCredential> signInWithApple() async {
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: nonce,
+    );
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+      rawNonce: rawNonce,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  }
+
+
+
   Future<UserCredential> signInWithKakao() async {
     final clientState =Uuid().v4();
     final url = Uri.https('kauth.kakao.com', '/oauth/authorize',{
@@ -77,6 +130,7 @@ class LoginWidget extends StatelessWidget {
     return await FirebaseAuth.instance.signInWithCustomToken(responseCustomToken.body);
 
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,13 +151,26 @@ class LoginWidget extends StatelessWidget {
 
             Padding(
               padding: const  EdgeInsets.fromLTRB(10, 20, 10, 10),
-              child: SignInButton(Buttons.AppleDark, onPressed: signInWithKakao),
+              child: SignInButton(Buttons.AppleDark, onPressed: signInWithApple),
             ),
 
             Padding(
               padding: const  EdgeInsets.fromLTRB(10, 20, 10, 10),
-              child: SignInButton(Buttons.Email, onPressed: testSigIn),
+              child: InkWell(
+                onTap: signInWithKakao,
+                child: Container(
+                  height: 36,
+                    child: Image.asset("imgs/kakao_login.png",fit: BoxFit.fitHeight,)),
+              )
             ),
+            // Padding(
+            //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+            //   child: SignInButton(Buttons.Google, onPressed: ()async {
+            //     var  test = isUser("kakao:1795389240");
+            //     print(await test);
+            //   }),
+            // ),
+
           ],
         ),
       ),
