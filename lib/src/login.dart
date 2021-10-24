@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:nfc_app21/src/FB_home.dart';
-// import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:uuid/uuid.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_signin_button/flutter_signin_button.dart';
@@ -81,23 +81,23 @@ class LoginWidget extends StatelessWidget {
   }
 
   //IOS 로그인
-  // Future<UserCredential> signInWithApple() async {
-  //   final rawNonce = generateNonce();
-  //   final nonce = sha256ofString(rawNonce);
-  //   final appleCredential = await SignInWithApple.getAppleIDCredential(
-  //     scopes: [
-  //       AppleIDAuthorizationScopes.email,
-  //       AppleIDAuthorizationScopes.fullName,
-  //     ],
-  //     nonce: nonce,
-  //   );
-  //   final oauthCredential = OAuthProvider("apple.com").credential(
-  //     idToken: appleCredential.identityToken,
-  //     accessToken: appleCredential.authorizationCode,
-  //     rawNonce: rawNonce,
-  //   );
-  //   return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
-  // }
+  Future<UserCredential> signInWithApple() async {
+    final rawNonce = generateNonce();
+    final nonce = sha256ofString(rawNonce);
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: nonce,
+    );
+    final oauthCredential = OAuthProvider("apple.com").credential(
+      idToken: appleCredential.identityToken,
+      accessToken: appleCredential.authorizationCode,
+      rawNonce: rawNonce,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(oauthCredential);
+  }
 
 
 
@@ -143,14 +143,14 @@ class LoginWidget extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(30, 50, 10, 40),
               child: Image.asset("imgs/logo.png",fit: BoxFit.fitHeight,),
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
-              child: SignInButton(Buttons.Google, onPressed: signInWithGoogle),
-            ),
             // Padding(
-            //   padding: const  EdgeInsets.fromLTRB(10, 20, 10, 10),
-            //   child: SignInButton(Buttons.AppleDark, onPressed: signInWithApple),
+            //   padding: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+            //   child: SignInButton(Buttons.Google, onPressed: signInWithGoogle),
             // ),
+            Padding(
+              padding: const  EdgeInsets.fromLTRB(10, 20, 10, 10),
+              child: SignInButton(Buttons.AppleDark, onPressed: signInWithApple),
+            ),
             Padding(
               padding: const  EdgeInsets.fromLTRB(10, 20, 10, 10),
               child: InkWell(
