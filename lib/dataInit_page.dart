@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -86,32 +87,38 @@ class _DataInitPage extends State<DataInitPage> {
 
   var visable = [false, false, false, false];
   String barcodeScanRes = "";
-  Future<bool> isUser(String uid)  async{
-    String _baseUrl = "210.119.104.206:8080";
-    String _getData = "/v1/common/user/userinfo";
 
+
+  Future<bool> dataInit(String uid,String email,String displayName,String psn,String wsn)  async {
+    print(uid);
+    print(email);
+    print(displayName);
+    print(psn);
+    print(wsn);
+
+    String _baseUrl = "210.119.104.206:8080";
+    String _getData = "/v1/common/user/datainit";
     final queryParameters = {
       'UUID': uid,
+      'Email':email,
+      'displayname':displayName,
+      'PSN':psn,
+      "WSN":wsn
     };
-    var url = Uri.http (
+    var url = Uri.http(
         _baseUrl,
         _getData,
         queryParameters);
-    var response = await http.get(url);
+    var response = await http.post(url);
     var test = jsonDecode(response.body);
-    print(response.body);
 
-    if(test["User_log"]["UUID"]=="") {
+    if (test) {
+      print("데이터가 없습니다");
       return Future(() => false);
-    }else{
+    } else {
       return Future(() => true);
-
     }
-
   }
-
-
-
 
 
   @override
@@ -312,6 +319,8 @@ class _DataInitPage extends State<DataInitPage> {
                           .size
                           .width,
                       child: TextField(
+                        controller: textCon[2],
+
                         cursorColor: mainColor,
                         decoration: InputDecoration(
 
@@ -360,6 +369,7 @@ class _DataInitPage extends State<DataInitPage> {
                           .size
                           .width,
                       child: TextField(
+                        controller: textCon[3],
                         cursorColor: mainColor,
 
                         decoration: InputDecoration(
@@ -426,10 +436,13 @@ class _DataInitPage extends State<DataInitPage> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          print(user.isUser);
+
+                          // dataInit(FirebaseAuth.instance.currentUser!.uid,FirebaseAuth.instance.currentUser!.email.toString()
+                          //     ,textCon[2].text,textCon[1].text,textCon[0].text);
+
                           Get.offAll(App());
                           user.check();
-                          print(user.isUser);
+
                           setState(() {
 
                           });

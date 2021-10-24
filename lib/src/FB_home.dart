@@ -28,10 +28,10 @@ class _fb_homeState extends State<fb_home> {
     var response = await http.get(url);
     var test = jsonDecode(response.body);
 
-    print(test);
     if (test["User_log"]["UUID"] == "") {
       return Future(() => false);
     } else {
+
       return Future(() => true);
     }
   }
@@ -53,7 +53,8 @@ class _fb_homeState extends State<fb_home> {
           }
           else{
             return FutureBuilder(
-              future: isUser(FirebaseAuth.instance.currentUser!.uid),
+              // future: isUser(FirebaseAuth.instance.currentUser!.uid),
+              future: isUser("user13"),
                 builder: (context, snapshot) {
                   if(snapshot.data == false ){
                     return DataInitPage();

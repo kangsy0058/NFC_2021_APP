@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -9,10 +10,34 @@ import 'package:nfc_app21/data/corna.dart';
 import 'package:nfc_app21/basics_example.dart';
 import 'package:nfc_app21/log_page.dart';
 import 'package:nfc_app21/main.dart';
+import 'package:http/http.dart' as http;
+
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
+}
+
+
+void initUserInfo(String uid)  async {
+  final UserController c = Get.find();
+  print(uid);
+  String _baseUrl = "210.119.104.206:8080";
+  String _getData = "/v1/common/user/userinfo";
+  final queryParameters = {
+    'UUID': uid,
+  };
+  var url = Uri.http(
+      _baseUrl,
+      _getData,
+      queryParameters);
+  var response = await http.get(url);
+  var test = jsonDecode(response.body);
+  print(test["User_log"]["PSN"]);
+  // c.PSN=test["User_log"]["PSN"];
+  // c.PSN=test["User_log"]["PSN"];
+
+
 }
 
 class _HomePageState extends State<HomePage> {
@@ -21,9 +46,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
+    initUserInfo("user13");
     cronaData.cornaInit();
-
   }
   Container buildConfirmedCases() {
 
@@ -153,8 +177,6 @@ class _HomePageState extends State<HomePage> {
     Color pointColor = Color(0xffff4c11); // 가장 찐
     Color borderColor = Color(0xffffbfaa);// 3 찐
     Color backColor = Color(0xffFFFCFA);// 배경
-
-
 
     return Scaffold(
         backgroundColor: Colors.white,

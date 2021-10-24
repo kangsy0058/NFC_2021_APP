@@ -67,7 +67,7 @@ class CBoard {
   }
 
   cornaInit() async {
-    print("cornaInit");
+    // print("cornaInit");
     //api호출하고 res까지만 받은 상태 1.date값 datenow로 변경,2.xml data parsing
     final queryParameters = {
       //하하 % URI 인코딩이 뭐가 문제가 있다 %를 25로 문제!!
@@ -88,11 +88,11 @@ class CBoard {
       final xml2json = Xml2Json()
         ..parse(xml);
       final json = xml2json.toParker(); //xml을 json형식으로
-      print(response.body);
+      // print(response.body);
 
       _coronaJson = convert.jsonDecode(
           json)["response"]["body"]["items"]["item"]; //필요한 값만
-      print(_coronaJson[0]);
+      // print(_coronaJson[0]);
       decide = int.parse(_coronaJson[0]["decideCnt"]) -
           int.parse(_coronaJson[1]["decideCnt"]); //확진자
       date = _coronaJson[0]["stateDt"] + " " + _coronaJson[0]["stateTime"];
