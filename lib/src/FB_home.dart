@@ -12,49 +12,37 @@ class fb_home extends StatefulWidget {
   @override
   _fb_homeState createState() => _fb_homeState();
 }
-
 class _fb_homeState extends State<fb_home> {
 
-  Future<bool> isUser(String uid)  async{
+  Future<bool> isUser(String uid)  async {
+    print(uid);
     String _baseUrl = "210.119.104.206:8080";
     String _getData = "/v1/common/user/userinfo";
-
     final queryParameters = {
       'UUID': uid,
     };
-    var url = Uri.http (
+    var url = Uri.http(
         _baseUrl,
         _getData,
         queryParameters);
     var response = await http.get(url);
     var test = jsonDecode(response.body);
-    print(response.body);
 
-    if(test["User_log"]["UUID"]=="") {
+    print(test);
+    if (test["User_log"]["UUID"] == "") {
       return Future(() => false);
-    }else{
+    } else {
       return Future(() => true);
-
     }
-
   }
-
-
-
-
-
   @override
   void initState() {
-
 
   }
   final UserController user = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
-
-
-
 
     return Scaffold(
       body: StreamBuilder(
@@ -64,20 +52,18 @@ class _fb_homeState extends State<fb_home> {
             return LoginWidget();
           }
           else{
-
-
-            // if(test){
-            //   print("dkdkd");
-            //
-            // }else{
-            //   print("이건 뭐야");
-            // }
-            //
-            //
-            //
-            //   return DataInitPage();
-
-            return App();
+            return FutureBuilder(
+              future: isUser(FirebaseAuth.instance.currentUser!.uid),
+                builder: (context, snapshot) {
+                  if(snapshot.data == false ){
+                    return DataInitPage();
+                  }else if (snapshot.data == true){
+                    return App();
+                  }else {
+                    return LoginWidget();
+                  }
+                },
+            );
 
           }
         }

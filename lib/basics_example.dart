@@ -115,10 +115,15 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
             startingDayOfWeek: StartingDayOfWeek.sunday,
             calendarStyle: CalendarStyle(
               markersMaxCount: 1,
-              markerDecoration: BoxDecoration(color:Color(0xffff4c11),shape:BoxShape.circle),
+              markerDecoration: BoxDecoration(
+                  color: Color(0xffff4c11), shape: BoxShape.circle),
               //weekendTextStyle: TextStyle().copyWith(color: Colors.red),
-              selectedDecoration: BoxDecoration(color: Color(0xffff7f55),shape:BoxShape.circle ),// 선택 날짜 데코
-              todayDecoration:  BoxDecoration(color:Color(0xffDBC7BA),shape:BoxShape.circle ), //오늘 날짜 데코
+              selectedDecoration: BoxDecoration(
+                  color: Color(0xffff7f55), shape: BoxShape.circle),
+              // 선택 날짜 데코
+              todayDecoration: BoxDecoration(
+                  color: Color(0xffDBC7BA), shape: BoxShape.circle),
+              //오늘 날짜 데코
               // Use `CalendarStyle` to customize the UI
               outsideDaysVisible: false,
             ),
@@ -135,14 +140,12 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
               _focusedDay = focusedDay;
             },
             headerStyle:
-                HeaderStyle(formatButtonVisible: false, titleCentered: true),
-
-
+            HeaderStyle(formatButtonVisible: false, titleCentered: true),
           ),
           const SizedBox(height: 8.0),
           Row(children: [
             Container(
-              padding: EdgeInsets.only(left: 20,top:20),
+              padding: EdgeInsets.only(left: 20, top: 20),
               child: Text(
                 '${new DateFormat.d('ko_KR').format(_focusedDay)}',
                 style: TextStyle(
@@ -174,7 +177,7 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
                       decoration:
                       BoxDecoration(
                         color: Color(0xffFFFCFA),
-                        border: Border.all( width: 2,color: Color(0xffffbfaa),),
+                        border: Border.all(width: 2, color: Color(0xffffbfaa),),
                         borderRadius: BorderRadius.circular(18.0),
                       ),
                       child: ListTile(
