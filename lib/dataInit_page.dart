@@ -17,6 +17,7 @@ import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 
 class DataInitPage  extends StatefulWidget {
@@ -90,32 +91,29 @@ class _DataInitPage extends State<DataInitPage> {
 
 
   Future<bool> dataInit(String uid,String email,String displayName,String psn,String wsn)  async {
-    print(uid);
-    print(email);
-    print(displayName);
-    print(psn);
-    print(wsn);
-
+    // var url = "210.119.104.206:8080/v1/common/user/datainit";
     String _baseUrl = "210.119.104.206:8080";
     String _getData = "/v1/common/user/datainit";
-    final queryParameters = {
-      'UUID': uid,
-      'Email':email,
-      'displayname':displayName,
-      'PSN':psn,
-      "WSN":wsn
-    };
     var url = Uri.http(
-        _baseUrl,
-        _getData,
-        queryParameters);
-    var response = await http.post(url);
-    var test = jsonDecode(response.body);
-
-    if (test) {
-      print("데이터가 없습니다");
+      _baseUrl,
+      _getData,);
+    try {
+      wsn = "wsn1134";
+      Map data = {
+        'UUID': uid,
+        'Email': email,
+        'displayname': displayName,
+        'PSN': psn,
+        "WSN": wsn
+      };
+      var body = json.encode(data);
+      final response = await http.post(
+          url,
+          headers: {"Content-Type": "application/json"},
+          body: body);
       return Future(() => false);
-    } else {
+    } catch (e) {
+      print(e);
       return Future(() => true);
     }
   }
@@ -436,15 +434,11 @@ class _DataInitPage extends State<DataInitPage> {
                       ),
                       child: TextButton(
                         onPressed: () {
-
-                          // dataInit(FirebaseAuth.instance.currentUser!.uid,FirebaseAuth.instance.currentUser!.email.toString()
-                          //     ,textCon[2].text,textCon[1].text,textCon[0].text);
-
+                          dataInit(FirebaseAuth.instance.currentUser!.uid,FirebaseAuth.instance.currentUser!.email.toString()
+                              ,textCon[2].text,textCon[1].text,textCon[0].text);
                           Get.offAll(App());
                           user.check();
-
                           setState(() {
-
                           });
                         },
                         child: Row(
