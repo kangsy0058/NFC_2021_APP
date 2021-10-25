@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nfc_app21/common/initPSN.dart';
 import 'package:nfc_app21/common/initWSN.dart';
+import 'package:nfc_app21/data/user.dart';
 import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
@@ -21,6 +22,8 @@ import 'package:nfc_app21/setting_page.dart';
 import 'package:nfc_app21/src/FB.dart';
 import 'package:nfc_app21/src/FB_home.dart';
 import 'package:nfc_app21/src/login.dart';
+
+import 'data/corna.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification.body}');
@@ -136,7 +139,6 @@ Container buildAccountOption(
                   .size
                   .height,null),
             );
-
           }else{
             Get.dialog(
               initPSN(MediaQuery
@@ -147,9 +149,7 @@ Container buildAccountOption(
                   .size
                   .height,null),
             );
-
           }
-
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -183,17 +183,14 @@ class _AppState extends State<App> {
 
   int selectedIndex = 0;
   final List<Widget> _children = [HomePage(), LogPage(), SettingPage()];
-
   var _currentIndex = 0;
-
   List listItem = ['ALL', '긴급'];
-
   String valueChoose = 'ALL';
-
   FirebaseMessaging messaging;
   @override
   void initState() {
     super.initState();
+
 
     FirebaseMessaging messaging;
     messaging = FirebaseMessaging.instance;
@@ -255,10 +252,10 @@ class _AppState extends State<App> {
                       thickness: 3,
                     ),
                     Text("개인 안심번호"),
-                    buildAccountOption(context, "개인안심번호",user.WSN,
+                    buildAccountOption(context, "개인안심번호",WSN,
                         CupertinoIcons.photo_on_rectangle),
                     Text("웨어러블"),
-                    buildAccountOption(context, "디바이스 ",user.PSN,
+                    buildAccountOption(context, "디바이스",PSN,
                         CupertinoIcons.pencil_ellipsis_rectangle),
                     Text("알림"),
                     Container(

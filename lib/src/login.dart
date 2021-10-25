@@ -51,29 +51,7 @@ class LoginWidget extends StatelessWidget {
     }
   }
 
-  Future<String> isUser(String uid) async {
-    String _baseUrl = "210.119.104.206:8080";
-    String _getData = "/v1/common/user/userinfo";
-    final queryParameters = {
-      'UUID': uid,
-    };
-    var url = Uri.http(
-        _baseUrl,
-        _getData,
-        queryParameters);
-    var response = await http.get(url);
-    // print(response.body);
 
-    var test = jsonDecode(response.body);
-
-    // print(test["User_log"]["UUID"]=="");
-
-    if(test["User_log"]["UUID"]=="") {
-      return Future(() => "false");
-    }else{
-      return Future(() => "true");
-    }
-  }
   String sha256ofString(String input) {
     final bytes = utf8.encode(input);
     final digest = sha256.convert(bytes);

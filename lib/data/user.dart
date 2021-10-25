@@ -1,10 +1,5 @@
 
+String WSN="";
+String PSN="";
+String DisplayName="";
 
-
-class NfcUser{
-  String WSN="...";
-  String PSN="...";
-
-
-}
-NfcUser nfcUser = NfcUser();

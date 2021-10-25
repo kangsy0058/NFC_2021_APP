@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nfc_app21/data/corna.dart';
 import 'package:nfc_app21/basics_example.dart';
+import 'package:nfc_app21/data/user.dart';
 import 'package:nfc_app21/log_page.dart';
 import 'package:nfc_app21/main.dart';
 import 'package:http/http.dart' as http;
@@ -18,40 +19,16 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-
-void initUserInfo(String uid)  async {
-  final UserController c = Get.find();
-  print(uid);
-  String _baseUrl = "210.119.104.206:8080";
-  String _getData = "/v1/common/user/userinfo";
-  final queryParameters = {
-    'UUID': uid,
-  };
-  var url = Uri.http(
-      _baseUrl,
-      _getData,
-      queryParameters);
-  var response = await http.get(url);
-  var test = jsonDecode(response.body);
-  print(test["User_log"]["PSN"]);
-  // c.PSN=test["User_log"]["PSN"];
-  // c.PSN=test["User_log"]["PSN"];
-
-
-}
-
 class _HomePageState extends State<HomePage> {
-  CBoard cronaData = CBoard();
-
   @override
   void initState() {
+    cornaInit();
+
     super.initState();
-    initUserInfo("user13");
-    cronaData.cornaInit();
   }
+
+
   Container buildConfirmedCases() {
-
-
     return Container(
       padding: EdgeInsets.fromLTRB(7, 10, 7, 0),
       margin: EdgeInsets.fromLTRB(2, 10, 2, 0),
@@ -94,8 +71,7 @@ class _HomePageState extends State<HomePage> {
                             size: 12,
                           ),
                           Text(
-                            // cronaData.decide.toString()
-                            "2,176"
+                            decide
                             ,
                             style:
                             TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -116,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "327,976",
+                              tot,
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )
@@ -138,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                     Text("검사 중 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
                     // Text(cronaData.exam.toString(),
-                    Text("6,884",
+                    Text(exam,
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -152,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                     Text("격리해제 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
                     // Text(cronaData.exam.toString(),
-                    Text("3,269",
+                    Text(clear,
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -165,13 +141,13 @@ class _HomePageState extends State<HomePage> {
 
   }
   Future<String> _fetch1() async {
-
-    return "dkdkd";
+    return "corona";
   }
 
   final UserController user = Get.find();
   @override
   Widget build(BuildContext context) {
+
 
     Color mainColor = Color(0xffff7f55); // 22 찐
     Color pointColor = Color(0xffff4c11); // 가장 찐
@@ -214,7 +190,7 @@ class _HomePageState extends State<HomePage> {
                       size: 16,
                     ),
                   ),
-                  Text(cBoard.date,
+                  Text(date,
                       style: TextStyle(color: Colors.grey, fontSize: 11)),
                 ]),
                 buildConfirmedCases(),
@@ -267,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                             "개인 안심번호",
                             style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
-                          Text("${user.PSN}",
+                          Text(PSN,
                               style: TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.bold)),
                         ],
@@ -293,7 +269,7 @@ class _HomePageState extends State<HomePage> {
                           Text("디바이스",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.grey)),
-                          Text("${user.WSN}",
+                          Text(WSN,
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold))
                         ],
@@ -313,8 +289,6 @@ class _HomePageState extends State<HomePage> {
                     
                   });
 
-                  //print(cBoard.date);
-                  print(cronaData.date);
                 }, child: Text("    ")),
                 // TextButton(
                 //     onPressed: () async {

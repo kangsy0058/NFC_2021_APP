@@ -59,28 +59,6 @@ class TagReadModel with ChangeNotifier {
   }
 }
 
-Future<bool> isUser(String uid)  async {
-  String _baseUrl = "210.119.104.206:8080";
-  String _getData = "/v1/common/user/datainit";
-
-  final queryParameters = {
-    'UUID': uid,
-  };
-  var url = Uri.http(
-      _baseUrl,
-      _getData,
-      queryParameters);
-  var response = await http.get(url);
-  var test = jsonDecode(response.body);
-  print(response.body);
-
-  if (test["User_log"]["UUID"] == "") {
-    return Future(() => false);
-  } else {
-    return Future(() => true);
-  }
-}
-
 class _DataInitPage extends State<DataInitPage> {
 
   final textCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
@@ -88,7 +66,6 @@ class _DataInitPage extends State<DataInitPage> {
 
   var visable = [false, false, false, false];
   String barcodeScanRes = "";
-
 
   Future<bool> dataInit(String uid,String email,String displayName,String psn,String wsn)  async {
     // var url = "210.119.104.206:8080/v1/common/user/datainit";
@@ -117,7 +94,6 @@ class _DataInitPage extends State<DataInitPage> {
       return Future(() => true);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
