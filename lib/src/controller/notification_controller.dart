@@ -43,9 +43,6 @@ class PushManager {
 }
 
 
-
-
-
 // import 'package:firebase_messaging/firebase_messaging.dart';
 // import 'package:get/get.dart';
 // import 'package:get/get_state_manager/get_state_manager.dart';

@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:nfc_app21/data/corna.dart';
+import 'package:nfc_app21/data/user.dart';
 import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/main.dart';
 import 'package:nfc_app21/src/login.dart';
@@ -15,7 +17,6 @@ class fb_home extends StatefulWidget {
 class _fb_homeState extends State<fb_home> {
 
   Future<bool> isUser(String uid)  async {
-    print(uid);
     String _baseUrl = "210.119.104.206:8080";
     String _getData = "/v1/common/user/userinfo";
     final queryParameters = {
@@ -28,17 +29,18 @@ class _fb_homeState extends State<fb_home> {
     var response = await http.get(url);
     var test = jsonDecode(response.body);
 
-    print(test);
     if (test["User_log"]["UUID"] == "") {
       return Future(() => false);
     } else {
+      WSN = test["User_log"]["Wearable_SN"];
+      PSN = test["User_log"]["PSN"];
+      DisplayName = test["User_log"]["DisplayName"];
+
+
       return Future(() => true);
     }
   }
-  @override
-  void initState() {
 
-  }
   final UserController user = Get.put(UserController());
 
   @override
@@ -54,10 +56,13 @@ class _fb_homeState extends State<fb_home> {
           else{
             return FutureBuilder(
               future: isUser(FirebaseAuth.instance.currentUser!.uid),
+              // future: isUser("user13"),//
                 builder: (context, snapshot) {
                   if(snapshot.data == false ){
                     return DataInitPage();
                   }else if (snapshot.data == true){
+
+
                     return App();
                   }else {
                     return LoginWidget();

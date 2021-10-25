@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -16,6 +17,7 @@ import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_manager/platform_tags.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart' show Client;
 
 
 class DataInitPage  extends StatefulWidget {
@@ -57,28 +59,6 @@ class TagReadModel with ChangeNotifier {
   }
 }
 
-Future<bool> isUser(String uid)  async {
-  String _baseUrl = "210.119.104.206:8080";
-  String _getData = "/v1/common/user/datainit";
-
-  final queryParameters = {
-    'UUID': uid,
-  };
-  var url = Uri.http(
-      _baseUrl,
-      _getData,
-      queryParameters);
-  var response = await http.get(url);
-  var test = jsonDecode(response.body);
-  print(response.body);
-
-  if (test["User_log"]["UUID"] == "") {
-    return Future(() => false);
-  } else {
-    return Future(() => true);
-  }
-}
-
 class _DataInitPage extends State<DataInitPage> {
 
   final textCon = [TextEditingController(),TextEditingController(),TextEditingController(),TextEditingController()];
@@ -86,33 +66,34 @@ class _DataInitPage extends State<DataInitPage> {
 
   var visable = [false, false, false, false];
   String barcodeScanRes = "";
-  Future<bool> isUser(String uid)  async{
+
+  Future<bool> dataInit(String uid,String email,String displayName,String psn,String wsn)  async {
+    // var url = "210.119.104.206:8080/v1/common/user/datainit";
     String _baseUrl = "210.119.104.206:8080";
-    String _getData = "/v1/common/user/userinfo";
-
-    final queryParameters = {
-      'UUID': uid,
-    };
-    var url = Uri.http (
-        _baseUrl,
-        _getData,
-        queryParameters);
-    var response = await http.get(url);
-    var test = jsonDecode(response.body);
-    print(response.body);
-
-    if(test["User_log"]["UUID"]=="") {
+    String _getData = "/v1/common/user/datainit";
+    var url = Uri.http(
+      _baseUrl,
+      _getData,);
+    try {
+      wsn = "wsn1134";
+      Map data = {
+        'UUID': uid,
+        'Email': email,
+        'displayname': displayName,
+        'PSN': psn,
+        "WSN": wsn
+      };
+      var body = json.encode(data);
+      final response = await http.post(
+          url,
+          headers: {"Content-Type": "application/json"},
+          body: body);
       return Future(() => false);
-    }else{
+    } catch (e) {
+      print(e);
       return Future(() => true);
-
     }
-
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -312,6 +293,8 @@ class _DataInitPage extends State<DataInitPage> {
                           .size
                           .width,
                       child: TextField(
+                        controller: textCon[2],
+
                         cursorColor: mainColor,
                         decoration: InputDecoration(
 
@@ -360,6 +343,7 @@ class _DataInitPage extends State<DataInitPage> {
                           .size
                           .width,
                       child: TextField(
+                        controller: textCon[3],
                         cursorColor: mainColor,
 
                         decoration: InputDecoration(
@@ -426,12 +410,11 @@ class _DataInitPage extends State<DataInitPage> {
                       ),
                       child: TextButton(
                         onPressed: () {
-                          print(user.isUser);
+                          dataInit(FirebaseAuth.instance.currentUser!.uid,FirebaseAuth.instance.currentUser!.email.toString()
+                              ,textCon[2].text,textCon[1].text,textCon[0].text);
                           Get.offAll(App());
                           user.check();
-                          print(user.isUser);
                           setState(() {
-
                           });
                         },
                         child: Row(

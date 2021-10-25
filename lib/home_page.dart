@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,27 +8,67 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:nfc_app21/data/corna.dart';
 import 'package:nfc_app21/basics_example.dart';
+import 'package:nfc_app21/data/user.dart';
 import 'package:nfc_app21/log_page.dart';
 import 'package:nfc_app21/main.dart';
+import 'package:http/http.dart' as http;
+
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  CBoard cronaData = CBoard();
 
+
+Future<bool> userLog(String WSN,String s_date,String e_date)  async {
+  String _baseUrl = "210.119.104.206:8080";
+  String _getData = "/v1/common/userlog/visitHistory";
+  final queryParameters = {
+    'Wearable_SN': WSN,
+    'start_date':s_date,
+    'end_date':e_date
+  };
+  var url = Uri.http(
+      _baseUrl,
+      _getData,
+      queryParameters);
+  var response = await http.get(url);
+  var test = jsonDecode(response.body);
+
+  if (test["User_log"]== null) {
+    return Future(() => false);
+  } else {
+    building = test["User_log"][0]["building_name"];
+    temp =  test["User_log"][0]["temp"]+"℃";
+
+    time = test["User_log"][0]["Time"];
+    int h =int.parse(time.substring(0,2));
+    if(h<12){
+      time = "오전 "+h.toString()+":"+time.substring(3,5);
+    }else{
+      time = "오후 "+h.toString()+":"+time.substring(3,5);
+
+    }
+
+    return Future(() => true);
+  }
+}
+
+class _HomePageState extends State<HomePage> {
   @override
   void initState() {
+    String day = "21"+date.substring(0, 2)+date.substring(3, 5);
+    userLog("WSN1111",day,day);
+
+    cornaInit();
+
+
     super.initState();
-
-    cronaData.cornaInit();
-
   }
+
+
   Container buildConfirmedCases() {
-
-
     return Container(
       padding: EdgeInsets.fromLTRB(7, 10, 7, 0),
       margin: EdgeInsets.fromLTRB(2, 10, 2, 0),
@@ -70,8 +111,7 @@ class _HomePageState extends State<HomePage> {
                             size: 12,
                           ),
                           Text(
-                            // cronaData.decide.toString()
-                            "2,176"
+                            decide
                             ,
                             style:
                             TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
@@ -92,7 +132,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "327,976",
+                              tot,
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold),
                             )
@@ -114,7 +154,7 @@ class _HomePageState extends State<HomePage> {
                     Text("검사 중 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
                     // Text(cronaData.exam.toString(),
-                    Text("6,884",
+                    Text(exam,
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -128,7 +168,7 @@ class _HomePageState extends State<HomePage> {
                     Text("격리해제 ",
                         style: TextStyle(fontSize: 12, color: Colors.grey)),
                     // Text(cronaData.exam.toString(),
-                    Text("3,269",
+                    Text(clear,
                         style: TextStyle(fontSize: 12, color: Colors.grey))
                   ],
                 ),
@@ -141,20 +181,16 @@ class _HomePageState extends State<HomePage> {
 
   }
   Future<String> _fetch1() async {
-
-    return "dkdkd";
+    return "corona";
   }
 
   final UserController user = Get.find();
   @override
   Widget build(BuildContext context) {
-
     Color mainColor = Color(0xffff7f55); // 22 찐
     Color pointColor = Color(0xffff4c11); // 가장 찐
     Color borderColor = Color(0xffffbfaa);// 3 찐
     Color backColor = Color(0xffFFFCFA);// 배경
-
-
 
     return Scaffold(
         backgroundColor: Colors.white,
@@ -192,7 +228,7 @@ class _HomePageState extends State<HomePage> {
                       size: 16,
                     ),
                   ),
-                  Text(cBoard.date,
+                  Text(date,
                       style: TextStyle(color: Colors.grey, fontSize: 11)),
                 ]),
                 buildConfirmedCases(),
@@ -245,7 +281,7 @@ class _HomePageState extends State<HomePage> {
                             "개인 안심번호",
                             style: TextStyle(fontSize: 12, color: Colors.grey),
                           ),
-                          Text("${user.PSN}",
+                          Text(PSN,
                               style: TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.bold)),
                         ],
@@ -271,7 +307,7 @@ class _HomePageState extends State<HomePage> {
                           Text("디바이스",
                               style:
                                   TextStyle(fontSize: 12, color: Colors.grey)),
-                          Text("${user.WSN}",
+                          Text(WSN,
                               style: TextStyle(
                                   fontSize: 12, fontWeight: FontWeight.bold))
                         ],
@@ -287,65 +323,14 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
                 TextButton(onPressed: (){
+
+
                   setState(() {
-                    
+
                   });
 
-                  //print(cBoard.date);
-                  print(cronaData.date);
                 }, child: Text("    ")),
-                // TextButton(
-                //     onPressed: () async {
-                //       var today = DateFormat("yyyyMMdd").format(DateTime.now());
-                //       var yesterday = DateFormat("yyyyMMdd").format(DateTime(
-                //         DateTime.now().subtract(Duration(days: 1)).year,
-                //         DateTime.now().subtract(Duration(days: 1)).month,
-                //         DateTime.now().subtract(Duration(days: 1)).day,
-                //       ));
-                //
-                //
-                //       //api호출하고 res까지만 받은 상태 1.date값 datenow로 변경,2.xml data parsing
-                //       final queryParameters = {
-                //         //하하 % URI 인코딩이 뭐가 문제가 있다 %를 25로 문제!!
-                //         'serviceKey': Uri.decodeFull(
-                //             "M8J0A7jAfaLHLHj9D0X1lnYa4XJtbC4fuymKw4y81OniBFdyb1IeE%2BZXE4A7WE0RfhlVO%2Bd2tuxIZ4qH5fmBQQ%3D%3D"),
-                //         'pageNo': '1',
-                //         'numOfRows': '2',
-                //         'startCreateDt':yesterday ,
-                //         'endCreateDt': today
-                //       };
-                //       var url = Uri.http(
-                //           "openapi.data.go.kr",
-                //           "/openapi/service/rest/Covid19/getCovid19InfStateJson",
-                //           queryParameters);
-                //
-                //       var response = await http.get(url);//api 요청
-                //       if (response.statusCode == 200) {//정상일 경우
-                //         final xml = response.body;//boy값만 xml
-                //         final xml2json = Xml2Json()..parse(xml);
-                //         final json = xml2json.toParker();//xml을 json형식으로
-                //
-                //         final coronaJson = convert.jsonDecode(json)["response"]["body"]["items"]["item"];//필요한 값만
-                //         // print(coronaJson);
-                //
-                //         var decide,clear,exam,date;
-                //         print(coronaJson[0]);
-                //         // print(coronaJson[0]["decideCnt"]);
-                //         // print(coronaJson[1]["decideCnt"]);
-                //
-                //         date = coronaJson[0]["stateDt"]+" "+coronaJson[0]["stateTime"];
-                //         date = date.substring(4);
-                //         date = date.substring(0,2)+"."+date.substring(2);//기준시간
-                //         decide = int.parse(coronaJson[0]["decideCnt"]) - int.parse(coronaJson[1]["decideCnt"]);//확진자
-                //         clear = int.parse(coronaJson[0]["clearCnt"]) - int.parse(coronaJson[1]["clearCnt"]);//격리해제
-                //         exam = int.parse(coronaJson[0]["examCnt"]) - int.parse(coronaJson[1]["examCnt"]);//검사자
-                //
-                //       } else {
-                //         print(
-                //             'Request failed with status: ${response.statusCode}.');
-                //       }
-                //     },
-                //     child: Text("데이터 test")),
+
 
               ])),
           Row(children: [
@@ -388,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                   fit: FlexFit.tight,
                   child: Row(
                     children: [
-                      Text("2021년 10월 8일",
+                      Text( "2021년"+date.substring(0, 2)+"월"+date.substring(3, 5)+"일",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -424,7 +409,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
-                              child: Text("36.2" + "℃",// ℃
+                              child: Text(temp,// ℃
                                   style: TextStyle(
                                       fontSize: 14, )
                               ),
@@ -453,7 +438,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
-                              child: Text("제2공학관",//강석규교육관
+                              child: Text(building,//강석규교육관
                                   style: TextStyle(
                                       fontSize: 14,)
                               ),
@@ -482,7 +467,7 @@ class _HomePageState extends State<HomePage> {
                             Flexible(
                               flex: 6,
                               fit: FlexFit.tight,
-                              child: Text("오후" + " " + "4:16",//
+                              child: Text(time,//
                                   style: TextStyle(
                                       fontSize: 14, )
                               ),

@@ -14,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:nfc_app21/common/initPSN.dart';
 import 'package:nfc_app21/common/initWSN.dart';
+import 'package:nfc_app21/data/user.dart';
 import 'package:nfc_app21/dataInit_page.dart';
 import 'package:nfc_app21/home_page.dart';
 import 'package:nfc_app21/log_page.dart';
@@ -21,6 +22,8 @@ import 'package:nfc_app21/setting_page.dart';
 import 'package:nfc_app21/src/FB.dart';
 import 'package:nfc_app21/src/FB_home.dart';
 import 'package:nfc_app21/src/login.dart';
+
+import 'data/corna.dart';
 
 Future<void> _messageHandler(RemoteMessage message) async {
   print('background message ${message.notification.body}');
@@ -35,9 +38,13 @@ Future<void> main() async {
 
 class Myapp extends StatelessWidget {
   final UserController user = Get.put(UserController());
+
+  Myapp(){
+    cornaInit();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // 투명색
     ));
@@ -56,7 +63,6 @@ class UserController extends GetxController{
   var WSN= "4a71e52076180".obs;
   var isUser = false.obs;
 
-  // var cnt = 0.obs;
   getWSN(){
     return "TWSN1234".obs;
   }
@@ -83,45 +89,42 @@ class UserController extends GetxController{
 
   }
 
-  // increment(){
-  //   return cnt++;
-  // }
+
 }
 
-class Test extends StatelessWidget {
-
-
-  @override
-  Widget build(context) {
-    // Get.put()을 사용하여 클래스를 인스턴스화하여 모든 "child'에서 사용가능하게 합니다.
-    final UserController user = Get.put(UserController());
-    return Scaffold(
-      // count가 변경 될 때마다 Obx(()=> 를 사용하여 Text()에 업데이트합니다.
-        appBar: AppBar(title: Obx(() => Text("Clicks: ${user.WSN}"))),
-
-        body: Column(
-          children: [
-            Center(child: ElevatedButton(
-                child: Text("Go to Other"), onPressed: () => Get.to(Other()))),
-          ],
-        ),
-        floatingActionButton:
-        FloatingActionButton(child: Icon(Icons.add), onPressed: (){
-          user.inputWSN();
-        }));
-  }
-}
-class Other extends StatelessWidget {
-  // 다른 페이지에서 사용되는 컨트롤러를 Get으로 찾아서 redirect 할 수 있습니다.
-  final UserController c = Get.find();
-  @override
-  Widget build(context){
-    // 업데이트된 count 변수에 연결
-    return Scaffold(body: Center(child: Text("${c.WSN}")));
-  }
-}
-
-
+// class Test extends StatelessWidget {
+//
+//
+//   @override
+//   Widget build(context) {
+//     // Get.put()을 사용하여 클래스를 인스턴스화하여 모든 "child'에서 사용가능하게 합니다.
+//     final UserController user = Get.put(UserController());
+//     return Scaffold(
+//       // count가 변경 될 때마다 Obx(()=> 를 사용하여 Text()에 업데이트합니다.
+//         appBar: AppBar(title: Obx(() => Text("Clicks: ${user.WSN}"))),
+//
+//         body: Column(
+//           children: [
+//             Center(child: ElevatedButton(
+//                 child: Text("Go to Other"), onPressed: () => Get.to(Other()))),
+//           ],
+//         ),
+//         floatingActionButton:
+//         FloatingActionButton(child: Icon(Icons.add), onPressed: (){
+//           user.inputWSN();
+//         }));
+//   }
+// }
+// class Other extends StatelessWidget {
+//   // 다른 페이지에서 사용되는 컨트롤러를 Get으로 찾아서 redirect 할 수 있습니다.
+//   final UserController c = Get.find();
+//   @override
+//   Widget build(context){
+//     // 업데이트된 count 변수에 연결
+//     return Scaffold(body: Center(child: Text("${c.WSN}")));
+//   }
+// }
+//
 
 Container buildAccountOption(
     BuildContext context, String title, var str, IconData icn) {
@@ -140,7 +143,6 @@ Container buildAccountOption(
                   .size
                   .height,null),
             );
-
           }else{
             Get.dialog(
               initPSN(MediaQuery
@@ -151,9 +153,7 @@ Container buildAccountOption(
                   .size
                   .height,null),
             );
-
           }
-
         },
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -187,17 +187,15 @@ class _AppState extends State<App> {
 
   int selectedIndex = 0;
   final List<Widget> _children = [HomePage(), LogPage(), SettingPage()];
-
   var _currentIndex = 0;
-
   List listItem = ['ALL', '긴급'];
-
   String valueChoose = 'ALL';
-
   FirebaseMessaging messaging;
   @override
   void initState() {
     super.initState();
+
+
 
     FirebaseMessaging messaging;
     messaging = FirebaseMessaging.instance;
@@ -259,10 +257,10 @@ class _AppState extends State<App> {
                       thickness: 3,
                     ),
                     Text("개인 안심번호"),
-                    buildAccountOption(context, "개인안심번호",user.WSN,
+                    buildAccountOption(context, "개인안심번호",WSN,
                         CupertinoIcons.photo_on_rectangle),
                     Text("웨어러블"),
-                    buildAccountOption(context, "디바이스 ",user.PSN,
+                    buildAccountOption(context, "디바이스",PSN,
                         CupertinoIcons.pencil_ellipsis_rectangle),
                     Text("알림"),
                     Container(
