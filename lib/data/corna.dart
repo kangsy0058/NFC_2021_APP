@@ -41,7 +41,7 @@ String _getData = "/openapi/service/rest/Covid19/getCovid19InfStateJson";
 String numberWithComma(int param){
   return new NumberFormat('###,###,###,###').format(param).replaceAll(' ', '');
 }
-cornaInit() async {
+Future<bool> cornaInit() async {
   final queryParameters = {
     //하하 % URI 인코딩이 뭐가 문제가 있다 %를 25로 문제!!
     'serviceKey': Uri.decodeFull(
@@ -84,9 +84,12 @@ cornaInit() async {
     clear = numberWithComma(clear);
     exam = numberWithComma(exam);
     tot = numberWithComma(tot);
+    return Future(() => true);
 
   } else {
     print(
         'Request failed with status: ${response.statusCode}.');
   }
+  return Future(() => false);
+
 }

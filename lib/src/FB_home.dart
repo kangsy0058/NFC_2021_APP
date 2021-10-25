@@ -36,13 +36,11 @@ class _fb_homeState extends State<fb_home> {
       PSN = test["User_log"]["PSN"];
       DisplayName = test["User_log"]["DisplayName"];
 
+
       return Future(() => true);
     }
   }
-  @override
-  void initState() {
 
-  }
   final UserController user = Get.put(UserController());
 
   @override

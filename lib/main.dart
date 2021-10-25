@@ -38,9 +38,13 @@ Future<void> main() async {
 
 class Myapp extends StatelessWidget {
   final UserController user = Get.put(UserController());
+
+  Myapp(){
+    cornaInit();
+  }
+
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // 투명색
     ));
@@ -190,6 +194,7 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+
 
 
     FirebaseMessaging messaging;
